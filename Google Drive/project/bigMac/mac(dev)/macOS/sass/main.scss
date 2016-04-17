@@ -1,0 +1,313 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,800italic,800,700italic,700,600italic,600,400italic,300italic,300);
+html,body{
+	width: 100%; height: 100%;
+	background: rgba(#cfcbc6, 0.4);
+	-webkit-touch-callout: none; /* iOS Safari */
+	user-select: none; 
+	
+}
+
+p{
+	font-size: 0.9em!important;
+}
+/*****************************************************************************
+*                                 parameter                                *
+*****************************************************************************/
+
+$wColor: #fff;
+
+/*font-size*/
+$regular: 400;
+$medium: 600;
+$bold: 800;
+$light: 300;
+/********************************Helper********************************/
+
+.centerbox{
+	width: 400px;
+	height: 70vh;
+	margin:auto;
+	padding-top: 30vh;
+	/*background: red;*/
+	position: relative;
+}
+
+p{
+	font-weight: $regular;
+}
+
+.dispear{
+	animation: dispear 0.1s 1 ease;
+}
+/*****************************************************************************
+*                                 component                                *
+*****************************************************************************/
+
+/********************************loadingPage********************************/
+body{
+	font-family: 'Open Sans', sans-serif !important;
+}
+/*lvl.1*/
+.loadingPage{
+	background: black;
+	width: 100vw;
+	height: 100vh;
+	color: $wColor;
+	height: 100%;
+	position: relative;
+		img{
+			width: 200px;
+			display: block;
+			margin: auto;
+		}
+		.loadBar{
+			width: 200px;
+			height: 4px;
+			border-radius: 2px;
+			background: #3b3b3b;
+			margin:2em auto;
+			>div{
+				width: 100%;
+				height: 100%;
+				border-radius: 2px;
+				background: $wColor;
+				animation: load 5s 1 ease-out;
+			}
+		}
+	
+}
+
+/********************************login********************************/
+/*lvl.1*/
+.logIn{
+	width: 100vw;
+	height: 100vh;
+	background:url(../images/blurBg-03.jpg);
+	background-size: cover;
+	position: fixed;
+
+	.circle{
+		width: 5.1em;
+		height: 5.1em;
+		border-radius: 3em;
+		background: rgba( $wColor, .8);
+		margin:auto;
+		position: relative;
+		box-shadow: 1px 1px 11px rgba(#464646, 0.1);
+	}
+	img{
+		width: 3em;
+		display: block;
+		margin:auto;
+		transform: translate(0, 0.4em);
+	}
+	p{
+		width: 100%;
+		margin-top:1.5em;
+		text-align: center;
+		color:$wColor;
+	}
+	.logIn-input{
+		width: 50%;
+		margin:1.5em auto;
+		display: flex;
+		transition: all 1s ease;
+		i{
+			width: 2em;
+			height: 2em;
+			position: absolute;
+			left: 3.6em;
+			background: red;
+			background: url(../images/log-arrow-left-07.png) no-repeat;
+			background-size: cover;
+			opacity: 0.8;
+			background-size: 2em;
+			
+		}
+		>div{
+			width: 100%;
+		}
+		input{
+			border:none;
+			height: 3em;
+			width: 92%;
+			border-radius:7px;
+			background: rgba($wColor, 0.2);
+			padding-left: 1em;
+			outline:none;
+			color:$wColor;
+		}
+		::-webkit-input-placeholder {
+		   color: rgba($wColor, 0.6);
+		   font-weight: $light;
+		   letter-spacing: 0.4px;
+		}
+
+		:-moz-placeholder { /* Firefox 18- */
+		   color: rgba($wColor, 0.6);  
+		   font-weight: $light;
+		   letter-spacing: 0.4px;
+		}
+
+		::-moz-placeholder {  /* Firefox 19+ */
+		   color: rgba($wColor, 0.6);  
+		   font-weight: $light;
+		   letter-spacing: 0.4px;
+		}
+
+		:-ms-input-placeholder {  
+		   color: rgba($wColor, 0.6);  
+		   font-weight: $light;
+		   letter-spacing: 0.4px;
+		}
+
+	}
+	.logIn-threeBtn{
+		margin-top: 10em;
+		width: 100%;
+		height:10em;
+		/*background: green;*/
+		display: flex;
+		position: absolute;
+		bottom: 0;
+		div{
+			flex:1;
+			img{
+				width: 2.5em;
+				display: block;
+				margin:auto;
+				opacity: 0.7;
+			}
+		}
+	}
+}
+
+
+/******************* desltop *********************/
+/*lvl.1*/
+.desktop{
+	width: 100%;
+	height: 100%;
+	background: url(../images/deskTopBg-08.jpg);
+	background-size: cover;
+	position: absolute;
+	.toolBar{
+		width: 100%;
+		height: 1.5em;
+		background: url(../images/toolBar-18.png);
+		background-size:  cover;
+		.menu{
+			display: flex;
+			height: 100%;
+			justify-content: space-between;
+			div{
+				width: 2em;
+			}
+			>div:first-child{
+				width: 50%;
+				display: flex;
+
+				div{
+					line-height: 1.5em;
+					text-align: center;
+					color:$wColor;
+					font-weight: $light;
+					font-size: 0.9em;
+					width: auto;
+					margin-left: 1.2em;
+				}
+
+				div:first-child{
+					/*background: green;*/
+					margin-left: 0em;
+					width: 2.3em;
+					img{
+						width: 3.7em;
+						transform: translate(0,-0.4em);
+					}
+				}
+				div:nth-child(2){
+					font-weight: $medium;
+					font-size: 0.8em;
+					line-height: 1.8em;
+				}
+/*				div:nth-child(3){
+					background: yellow;
+				}
+				div:nth-child(4){
+					background: blue;
+				}
+				div:nth-child(5){
+					background: darksalmon;
+				}
+				div:nth-child(6){
+					background: salmon;
+				}
+				div:nth-child(7){
+					background: lightblue;
+				}*/
+			};
+			>div:nth-child(2){
+				width: 22%;
+				display: flex;
+				justify-content: flex-end;
+				padding-right: 1em;
+				div{
+					line-height: 1.5em;
+					text-align: center;
+					color:$wColor;
+					font-weight: $regular;
+					font-size: 0.9em;
+					width: auto;
+					margin-left: 0.4em;
+					img{
+						width: 1.3em;
+					}
+				}
+				div:nth-child(5){
+					margin-left: 1em;
+					img{
+						width: 1em;
+						transform: translate(0, 0.1em);
+					}
+				}
+				div:nth-child(6){
+					margin-left: 1em;
+					img{
+						transform: translate(0, 0.1em);
+						width: 1.2em;
+					}
+				}
+
+			}
+		}
+	}
+}
+/*****************************************************************************
+*                                 animation                                *
+****************************************************************************
+*/
+@keyframes load{
+	from{
+		width: 0%;
+	}
+	30%{
+		width: 20%;
+	}
+	40%{
+		width: 20%;
+	}
+	80%{
+		width:80%;
+	}
+	89%{
+		width:80%;
+	}
+}
+@keyframes dispear{
+	to{
+		opacity: 0;
+	}
+}
+
+
