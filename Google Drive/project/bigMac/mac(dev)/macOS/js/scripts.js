@@ -1,8 +1,8 @@
 // ****************************************************************************
 // *                                  status                                  *
 // ****************************************************************************
-var today = true;
-var notifications = false;
+var tabToday = true;
+var tabNotifications = false;
 
 
 // ****************************************************************************
@@ -198,34 +198,57 @@ var sideMenu = {
 		this.el.classList.add(this.className[0])
 		this.el.innerHTML = "";
 		Desktop.el.appendChild(this.el);
-		this.el.appendChild(sideMenuTab.addFn());
+		this.el.appendChild(sideMenuTab.addFn());/*<-----------------*/
 		var today = document.querySelector(".today");
 		var notifications = document.querySelector(".notifications");
 		var tabs = [today,notifications];
-		today.addEventListener("mousedown", onMouseDownT);
-		notifications.addEventListener("mousedown", onMouseDownN);
+		today.addEventListener("click", onMouseDownT);
+		notifications.addEventListener("click", onMouseDownN);
 		function onMouseDownT(){
 			var b = new RegExp("activeTab").test(this.className);
 			if(b){
-				// this.classList.remove("activeTab");
-				// notifications.classList.add("activeTab");
+				//when today tab already actived, set light color when active
+				if (tabToday) {
+					this.addEventListener("mousedown", function(){
+						this.classList.add('tabBackgrond')
+					})
+					this.addEventListener("mouseup", function(){
+						this.classList.remove('tabBackgrond')
+					})
+				}else{
+					return
+				};
 				return
 			}else{
 				this.classList.add("activeTab");
 				notifications.classList.remove("activeTab");
+				tabToday = true;
+				tabNotifications = false;
 			}
 		}
 		function onMouseDownN(){
 			var b = new RegExp("activeTab").test(this.className);
 			if(b){
-				// this.classList.remove("activeTab");
-				// today.classList.add("activeTab");
+				//when today tab already actived, set light color when active
+				if (tabNotifications) {
+					this.addEventListener("mousedown", function(){
+						this.classList.add('tabBackgrond')
+					})
+					this.addEventListener("mouseup", function(){
+						this.classList.remove('tabBackgrond')
+					})
+				}else{
+					return
+				};
 				return
 			}else{
 				this.classList.add("activeTab");
 				today.classList.remove("activeTab");
+				tabToday = false;
+				tabNotifications = true;
 			}
 		}
+		this.el.appendChild(todayContainer.addFn());/*<------------------*/
 	}
 }
 
@@ -239,6 +262,41 @@ var sideMenuTab = {
 		return this.el;
 	}
 }
+
+// child of sidemenu
+var todayContainer = {
+	el: document.createElement("div"),
+	className : ["todayContainer"],
+	addFn: function(){
+		this.el.classList.add(this.className[0]);
+		this.el.innerHTML = "<div class='resume-title'>Resume</div>";
+		this.el.innerHTML += "<h1 class='todayBody'>Jason Sheng</h1>"; /*temp*/
+		this.el.innerHTML += "<p>Jason Sheng</p>"; /*temp*/
+		this.el.innerHTML += "<p>Jason Sheng</p>"; /*temp*/
+		this.el.appendChild(todayTitle.addFn()) /*<-----------*/
+		return this.el;
+	}
+}
+
+var titles = ["Education","Proficiencies","Personal Skill"];
+//child of todayContainer
+var todayTitle = {
+	el: document.createElement("div"),
+	className : ["todayTitle"],
+	addFn: function(){
+		this.el.classList.add(this.className[0]);
+		var inner;
+		this.el.innerHTML = "";
+		for (var i = 0; i < titles.length; i++) {
+			var title = document.createElement("div");
+			title.classList.add("todayTitles");
+			title.textContent = titles[i];/*<-----------*/
+			this.el.appendChild(title);
+		};
+		return this.el;
+	}
+}
+
 // ****************************************************************************
 // *                                  render                                  *
 // ****************************************************************************
