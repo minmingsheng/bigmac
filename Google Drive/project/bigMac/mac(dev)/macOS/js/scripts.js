@@ -18,7 +18,9 @@ var img = {
 	apple: "images/apple.png",
 	battery: "images/battery-20.png",
 	ampifier: "images/ampifier-21.png",
-	sidemenu: "images/sidemenu-22.png"
+	sidemenu: "images/sidemenu-22.png",
+	questionMark: "images/questionMark-23.png",
+	toolbarInfo: "images/toolbar-info.png",
 };
 var btnImg = {
 	sleep: "images/Sleep-04.png",
@@ -182,7 +184,7 @@ var toolBarMenu = {
 				}, 2);
 				toggle = false;
 			}else{
-				sideMenu.el.style.right = '-18em';
+				sideMenu.el.style.right = '-20em';
 				toggle = true
 			}
 			
@@ -249,6 +251,8 @@ var sideMenu = {
 			}
 		}
 		this.el.appendChild(todayContainer.addFn());/*<------------------*/
+		/*from child(titlebody)*/
+		todayBody.clickQuestionFn();
 	}
 }
 
@@ -270,11 +274,27 @@ var todayContainer = {
 	addFn: function(){
 		this.el.classList.add(this.className[0]);
 		this.el.innerHTML = "<div class='resume-title'>Resume</div>";
-		this.el.innerHTML += "<h1 class='todayBody'>Jason Sheng</h1>"; /*temp*/
-		this.el.innerHTML += "<p>Jason Sheng</p>"; /*temp*/
-		this.el.innerHTML += "<p>Jason Sheng</p>"; /*temp*/
+		this.el.appendChild(todayBody.el())
 		this.el.appendChild(todayTitle.addFn()) /*<-----------*/
+
 		return this.el;
+	}
+}
+var todayBody = {
+	el: function(){
+		var el = document.createElement("div");
+		el.innerHTML = "<h1>Jason Sheng</h1>"
+		el.innerHTML += "<p>Interdisciplinary Designer <span class='interQuestion' ><img src="+ img.questionMark+ "  /></span></p>"
+		el.innerHTML += "<p>Based In Toronto</p>"
+		el.classList.add("todayBody");
+
+		return el;
+	},
+	clickQuestionFn: function(){
+		document.querySelector('.interQuestion').addEventListener("click", function	(){
+			infoWindow.addFn();
+			infoWindow.buttonFn();
+		})
 	}
 }
 
@@ -297,6 +317,25 @@ var todayTitle = {
 	}
 }
 
+/******************************* winddow ******************************/
+var infoWindow = {
+	el: document.createElement("div"),
+	className: ["window", "info-window"],
+	addFn: function(){
+		this.el.classList.add(this.className[0]);
+		this.el.classList.add(this.className[1]);
+		this.el.style.top = "30%"
+		this.el.style.left = "30%";
+		this.el.innerHTML = "<div class='title'></div>"
+		this.el.innerHTML += "<div class='body'><div><img src="+ img.toolbarInfo +"  /></div><div><h1>Interdisciplinary Designer</h1><p>Interdisciplinary designers' areas are never limited, they use design thinking to define and solve problems. It is a part of T-shape deisgner </p><button>ok</button></div></div>"
+		Desktop.el.appendChild(this.el);
+	},
+	buttonFn: function(){
+		this.el.querySelector("button").addEventListener("click", function(){
+			this.parentElement.parentElement.parentElement.remove();
+		})
+	}
+}
 // ****************************************************************************
 // *                                  render                                  *
 // ****************************************************************************
