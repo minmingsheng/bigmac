@@ -1,4 +1,11 @@
 // ****************************************************************************
+// *                                  status                                  *
+// ****************************************************************************
+var today = true;
+var notifications = false;
+
+
+// ****************************************************************************
 // *                                    img                                   *
 // ****************************************************************************
 
@@ -148,22 +155,90 @@ var ToolBar = {
 		this.el.innerHTML = this.template;
 		Desktop.el.appendChild(this.el);
 		this.el.appendChild(toolBarMenu.el()) /*<-----------*/
+		toolBarMenu.activeSideMenu()
 	}
 }
 
 // child of ToolBar
 var toolBarMenu = {
 	leftTemplate: "<div><img src=" + img.apple + "  /></div><div>JASON</div><div>File</div><div>Edit</div><div>View</div><div>Go</div><div>Window</div><div>About Me</div>",
-	rightTemplate: "<div>Sat</div><div>Apr</div><div>Tue</div><div>01:27:00</div><div><img src="+ img.ampifier +"  /></div><div><img src="+ img.sidemenu +"  /></div>",
+	rightTemplate: "<div>Sat</div><div>Apr</div><div>Tue</div><div>01:27:00</div><div><img src="+ img.ampifier +"  /></div><div><img class='sidemenu' src="+ img.sidemenu +"  /></div>",
 	el : function(){
 		var el = document.createElement("div");
 		el.setAttribute("class", "menu")
 		el.innerHTML = "<div>"+this.leftTemplate+"</div>";
 		el.innerHTML += "<div>"+this.rightTemplate+"</div>";
 		return el;
+	},
+	activeSideMenu: function(){
+		var t = document.querySelector(".sidemenu");
+		t.addEventListener("mousedown", onclick);
+		var toggle = true;
+		function onclick(){
+			if(toggle){
+				sideMenu.addFn();
+				setTimeout(function(){
+				sideMenu.el.style.right = '0';
+				}, 2);
+				toggle = false;
+			}else{
+				sideMenu.el.style.right = '-18em';
+				toggle = true
+			}
+			
+		}
+	}
+}
+// child of Desktop
+var sideMenu = {
+	el: document.createElement("div"),
+	className: ["slideMenu"],
+	addFn: function(){
+		console.log("asdasdsasaadsa");
+		this.el.classList.add(this.className[0])
+		this.el.innerHTML = "";
+		Desktop.el.appendChild(this.el);
+		this.el.appendChild(sideMenuTab.addFn());
+		var today = document.querySelector(".today");
+		var notifications = document.querySelector(".notifications");
+		var tabs = [today,notifications];
+		today.addEventListener("mousedown", onMouseDownT);
+		notifications.addEventListener("mousedown", onMouseDownN);
+		function onMouseDownT(){
+			var b = new RegExp("activeTab").test(this.className);
+			if(b){
+				// this.classList.remove("activeTab");
+				// notifications.classList.add("activeTab");
+				return
+			}else{
+				this.classList.add("activeTab");
+				notifications.classList.remove("activeTab");
+			}
+		}
+		function onMouseDownN(){
+			var b = new RegExp("activeTab").test(this.className);
+			if(b){
+				// this.classList.remove("activeTab");
+				// today.classList.add("activeTab");
+				return
+			}else{
+				this.classList.add("activeTab");
+				today.classList.remove("activeTab");
+			}
+		}
 	}
 }
 
+// child of sidemenu
+var sideMenuTab = {
+	el: document.createElement("div"),
+	className : ["sideMenuTab"],
+	addFn: function(){
+		this.el.classList.add(this.className[0]);
+		this.el.innerHTML = "<div class='today activeTab'>Today</div><div class='notifications'>Notifications</div>";
+		return this.el;
+	}
+}
 // ****************************************************************************
 // *                                  render                                  *
 // ****************************************************************************

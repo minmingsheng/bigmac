@@ -15,12 +15,18 @@ p{
 *****************************************************************************/
 
 $wColor: #fff;
-
+$dbg: #0f0f0f;
 /*font-size*/
 $regular: 400;
 $medium: 600;
 $bold: 800;
 $light: 300;
+
+/*color*/
+$active:    #0063ec;
+$tabToday: #a0a1a3;
+$tabNotification: #636464;
+$mediumGray: #232323;
 /********************************Helper********************************/
 
 .centerbox{
@@ -196,6 +202,7 @@ body{
 		height: 1.5em;
 		background: url(../images/toolBar-18.png);
 		background-size:  cover;
+		font-size: 0.99em;
 		.menu{
 			display: flex;
 			height: 100%;
@@ -206,24 +213,31 @@ body{
 			>div:first-child{
 				width: 50%;
 				display: flex;
-
+				padding-left: 0.6em;
 				div{
+					padding:0 0.4em 0 0.4em; 
 					line-height: 1.5em;
 					text-align: center;
 					color:$wColor;
 					font-weight: $light;
 					font-size: 0.9em;
 					width: auto;
-					margin-left: 1.2em;
+					margin-left: 0.4em;
+					cursor: pointer;
+					&:active{
+						background:$active;
+						cursor: pointer;
+					}
 				}
 
 				div:first-child{
 					/*background: green;*/
 					margin-left: 0em;
-					width: 2.3em;
+					width: 2.0em;
+					/*apple*/
 					img{
 						width: 3.7em;
-						transform: translate(0,-0.4em);
+						transform: translate(-0.9em,-0.3em);
 					}
 				}
 				div:nth-child(2){
@@ -264,6 +278,10 @@ body{
 						width: 1.3em;
 					}
 				}
+				div:nth-child(4){
+					margin-left: 1em;
+				}
+				/*amipifier*/
 				div:nth-child(5){
 					margin-left: 1em;
 					img{
@@ -271,11 +289,18 @@ body{
 						transform: translate(0, 0.1em);
 					}
 				}
+				/*sidemenu*/
 				div:nth-child(6){
 					margin-left: 1em;
+					padding:0 0.6em 0 0.6em;
 					img{
 						transform: translate(0, 0.1em);
 						width: 1.2em;
+					}
+					cursor: pointer;
+					&:active{
+						background:$active;
+						cursor: pointer;
 					}
 				}
 
@@ -283,6 +308,53 @@ body{
 		}
 	}
 }
+/***********************sidemeuw*********************/
+.slideMenu{
+	width: 18em;
+	height: 100vh;
+	background: rgba($dbg, 0.8);
+	position: fixed;
+	right:-18em;
+	transition: all 0.3s ease;
+	.sideMenuTab{
+		height: 3em;
+		width: 100%;
+		/*background: red;*/
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		div{
+			padding: 0.3em;
+			text-align: center;
+			color:$wColor;
+			font-size: 0.77em;
+			font-weight: $light;
+			height: 1.6em;
+			width: 40%;
+			margin-top: 0.7em;
+			line-height: 1.6em;
+			background: $tabNotification;
+			cursor: pointer;
+		};
+		.today{
+			
+			/*background:$tabToday;*/
+			border-top-left-radius: 0.6em;			
+			border-bottom-left-radius: 0.6em;			
+		}
+		.activeTab{
+			background: $tabToday;
+			color: $mediumGray;
+		}
+		.notifications{
+			/*background: $tabNotification;*/
+			border-top-right-radius: 0.6em;			
+			border-bottom-right-radius: 0.6em;	
+		}
+	}
+}
+
+
 /*****************************************************************************
 *                                 animation                                *
 ****************************************************************************
