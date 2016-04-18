@@ -38,7 +38,9 @@ html,body{
 	user-select: none; 
 	
 }
-
+::-webkit-scrollbar { 
+    display: none; 
+}
 p{
 	font-size: 0.9em;
 }
@@ -46,7 +48,9 @@ h1{
 	font-size: 1.3em;
 	font-weight: $light;
 }
-
+.dispear{
+	animation: dispear 0.1s 1 ease;
+}
 /*****************************************************************************
 *                                   title                                  *
 *****************************************************************************/
@@ -63,9 +67,7 @@ p{
 	font-weight: $regular;
 }
 
-.dispear{
-	animation: dispear 0.1s 1 ease;
-}
+
 .tabBackgrond{
 	background: hsl(220, 1%, 70%) !important;
 }
@@ -139,7 +141,7 @@ body{
 				border-radius: 2px;
 				background: $wColor;
 				/*animation: load 5s 1 ease-out;*/
-				animation: load 0.1s 1 ease-out;
+				animation: load 5s 1 ease-out;
 			}
 		}
 	
@@ -307,21 +309,7 @@ body{
 					font-size: 0.8em;
 					line-height: 1.8em;
 				}
-/*				div:nth-child(3){
-					background: yellow;
-				}
-				div:nth-child(4){
-					background: blue;
-				}
-				div:nth-child(5){
-					background: darksalmon;
-				}
-				div:nth-child(6){
-					background: salmon;
-				}
-				div:nth-child(7){
-					background: lightblue;
-				}*/
+
 			};
 			>div:nth-child(2){
 				width: 22%;
@@ -340,19 +328,20 @@ body{
 						width: 1.3em;
 					}
 				}
-				div:nth-child(4){
+				div:nth-child(3){
 					margin-left: 1em;
 				}
 				/*amipifier*/
-				div:nth-child(5){
+				div:nth-child(4){
 					margin-left: 1em;
 					img{
 						width: 1em;
 						transform: translate(0, 0.1em);
+
 					}
 				}
 				/*sidemenu*/
-				div:nth-child(6){
+				div:nth-child(5){
 					margin-left: 1em;
 					padding:0 0.6em 0 0.6em;
 					img{
@@ -370,6 +359,19 @@ body{
 		}
 	}
 }
+
+/*********************** Dock *********************/
+.dock{
+	position: absolute;
+	width: 300px;
+	height: 100px;
+	background: $dbg;
+	bottom: 0;
+	left:0;
+	right:0;
+	margin: auto;
+}
+
 /*********************** sidemeue *********************/
 $width-slideMenu: 22em;
 .slideMenu{
@@ -446,7 +448,11 @@ $width-slideMenu: 22em;
 			}
 			p{
 				margin-top: 0.4rem;
-				
+				font-size: $xFont;
+				font-weight: $medium;
+				&:last-child{
+					font-weight: $light;
+				};
 			}
 			span{
 				transition: all 100ms ease;
@@ -513,7 +519,7 @@ $width-slideMenu: 22em;
 							/*certificate*/
 							width: 100%;
 							transform: translate(0,-0.4em);
-							opacity: 0.8;
+							opacity: 0.5;
 							&::before{
 								content: "(";
 							};

@@ -121,7 +121,6 @@ var Input = {
 				setTimeout(function(){
 					LogIn.el.remove();
 					Desktop.addFn(); /*<----------------*/
-					ToolBar.addFn(); /*<----------------*/
 				}, 2000)
 			}
 		}
@@ -129,7 +128,7 @@ var Input = {
 			var parent = document.querySelector(".centerbox");
 			var load = document.createElement("div");
 			load.style.marginTop = "2em";
-			load.innerHTML = "<img src="+img.load+" />";
+			load.innerHTML = "<img src="+img.load+" style='opacity:0.5' />";
 			parent.appendChild(load);
 
 		}
@@ -145,9 +144,12 @@ var Desktop = {
 		this.el.classList.add(this.className[0]);
 		this.el.innerHTML = this.template;
 		document.body.appendChild(this.el);
+		ToolBar.addFn(); /*<----------------*/
+		Dock.addFn(); /*<-----------------*/
 	}
 }
 
+// child of Desktop
 var ToolBar = {
 	el: document.createElement("div"),
 	template:"",
@@ -161,10 +163,21 @@ var ToolBar = {
 	}
 }
 
+var Dock = {
+	el: document.createElement("div"),
+	template: "",
+	className: ["dock"],
+	addFn: function(){
+		this.el.classList.add(this.className[0]);
+		this.el.innerHTML = "<h1>Dock</h1>";
+		Desktop.el.appendChild(this.el);
+	}
+}
+
 // child of ToolBar
 var toolBarMenu = {
 	leftTemplate: "<div><img src=" + img.apple + "  /></div><div>JASON</div><div>File</div><div>Edit</div><div>View</div><div>Go</div><div>Window</div><div>About Me</div>",
-	rightTemplate: "<div>Sat</div><div>Apr</div><div>Tue</div><div>01:27:00</div><div><img src="+ img.ampifier +"  /></div><div><img class='sidemenu' src="+ img.sidemenu +"  /></div>",
+	rightTemplate: "<div class='day'>Tue</div><div class='month'>Apr</div><div class='realtime'>00:00:00</div><div><img src="+ img.ampifier +"  /></div><div><img class='sidemenu' src="+ img.sidemenu +"  /></div>",
 	el : function(){
 		var el = document.createElement("div");
 		el.setAttribute("class", "menu")
@@ -193,6 +206,41 @@ var toolBarMenu = {
 			}
 			
 		}
+		this.realTime();
+	},
+	realTime: function(){
+		var days = ["Sun","Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+		var months = ["Jan","Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		var currentTime = new Date();
+		console.log(days[currentTime.getDay()]);
+		console.log(months[currentTime.getMonth()]);
+		document.querySelector(".day").innerHTML = days[currentTime.getDay()];
+		document.querySelector(".month").innerHTML = months[currentTime.getMonth()];
+		setInterval(function(){
+			var currentTime = new Date();
+			var hours = function(){
+				if(parseInt(currentTime.getHours())<10){
+					return "0"+currentTime.getHours();
+				}else{
+					return currentTime.getHours();
+				};
+			}
+			var minutes =function(){
+				if(parseInt(currentTime.getMinutes())<10){
+					return "0"+currentTime.getMinutes();
+				}else{
+					return currentTime.getMinutes();
+				};
+			}
+		   	var seconds = function(){
+				if(parseInt(currentTime.getSeconds())<10){
+					return "0"+currentTime.getSeconds();
+				}else{
+					return currentTime.getSeconds();
+				};
+			}
+			document.querySelector('.realtime').innerHTML =hours() +":"+minutes()+":"+ seconds(); 		
+		}, 1000)
 	}
 }
 // child of Desktop
@@ -211,6 +259,7 @@ var sideMenu = {
 		today.addEventListener("click", onMouseDownT);
 		notifications.addEventListener("click", onMouseDownN);
 		function onMouseDownT(){
+			console.log("todayContainer.el",todayContainer.el);
 			var b = new RegExp("activeTab").test(this.className);
 			if(b){
 				//when today tab already actived, set light color when active
@@ -229,6 +278,7 @@ var sideMenu = {
 				this.classList.add("activeTab");
 				notifications.classList.remove("activeTab");
 				tabToday = true;
+				todayContainer.el.style.display = "block";
 				tabNotifications = false;
 			}
 		}
@@ -251,6 +301,11 @@ var sideMenu = {
 				this.classList.add("activeTab");
 				today.classList.remove("activeTab");
 				tabToday = false;
+				todayContainer.el.classList.add("dispear");
+				animated(todayContainer.el, function(){
+					todayContainer.el.style.display = 'none';
+					todayContainer.el.classList.remove("dispear");
+				})
 				tabNotifications = true;
 			}
 		}
@@ -266,7 +321,7 @@ var sideMenuTab = {
 	className : ["sideMenuTab"],
 	addFn: function(){
 		this.el.classList.add(this.className[0]);
-		this.el.innerHTML = "<div class='today activeTab'>Today</div><div class='notifications'>Notifications</div>";
+		this.el.innerHTML = "<div class='today activeTab'>Me</div><div class='notifications'>Notifications</div>";
 		return this.el;
 	}
 }
@@ -277,17 +332,16 @@ var todayContainer = {
 	className : ["todayContainer"],
 	addFn: function(){
 		this.el.classList.add(this.className[0]);
-		this.el.innerHTML = "<div class='resume-title'>Resume</div>";
+		this.el.innerHTML = "<div class='resume-title'><div>Resume</div></div>";
 		this.el.appendChild(todayBody.el())
 		this.el.appendChild(todayTitle.addFn()) /*<-----------*/
-
 		return this.el;
 	}
 }
 var todayBody = {
 	el: function(){
 		var el = document.createElement("div");
-		el.innerHTML = "<h1>Jason Sheng</h1>"
+		el.innerHTML = "<h1>Jason Sheng (Available)</h1>"
 		el.innerHTML += "<p>Interdisciplinary Designer <span class='interQuestion' ><img src="+ img.questionMark+ "  /></span></p>"
 		el.innerHTML += "<p>Based In Toronto</p>"
 		el.classList.add("todayBody");
@@ -379,7 +433,7 @@ var infoWindow = {
 		this.el.style.top = "30%"
 		this.el.style.left = "30%";
 		this.el.innerHTML = "<div class='title'></div>"
-		this.el.innerHTML += "<div class='body'><div><img src="+ img.toolbarInfo +"  /></div><div><h1>Interdisciplinary Designer</h1><p>Interdisciplinary designers' areas are never limited, they use design thinking to define and solve problems. It is a part of T-shape deisgner </p><button>ok</button></div></div>"
+		this.el.innerHTML += "<div class='body'><div><img src="+ img.toolbarInfo +"  /></div><div><h1>Interdisciplinary Designer</h1><p>Interdisciplinary designers' areas are never limited, they use design thinking to define and solve problems. They are T-shape designers </p><button>ok</button></div></div>"
 		Desktop.el.appendChild(this.el);
 	},
 	buttonFn: function(){
