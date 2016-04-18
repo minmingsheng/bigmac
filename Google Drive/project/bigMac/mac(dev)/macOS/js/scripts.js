@@ -180,13 +180,15 @@ var toolBarMenu = {
 
 		function onclick(){
 			if(toggle){
+				/*open slide menu*/
 				sideMenu.addFn();
 				setTimeout(function(){
 				sideMenu.el.style.right = '0';
 				}, 2);
 				toggle = false;
 			}else{
-				sideMenu.el.style.right = '-20em';
+				/*close slide menu*/
+				sideMenu.el.style.right = -sideMenu.el.getClientRects()[0].width+"px";
 				toggle = true
 			}
 			
@@ -321,13 +323,11 @@ var todayTitle = {
 				title.classList.add("todayTitles");
 				title.innerHTML = "<h1>"+prop+"</h1>";/*<-----------Education*/
 				if(prop == "Education"){
-					console.log(resume[prop]);
 					var text = document.createElement("div");
 					resume[prop].map(function(e){
 						var eudlists = document.createElement('div');
 						// eudlists.textContent = e;
 						for(var a in e){
-							console.log("a:", e[a]);
 							var li = document.createElement("div");
 							li.textContent = e[a];
 							eudlists.appendChild(li)
@@ -336,6 +336,23 @@ var todayTitle = {
 					})
 					title.appendChild(text);
 
+				}else if(prop == "Proficiencies"){
+					console.log("Proficiencies:", resume[prop]);
+					var text = document.createElement("div");
+					text.classList.add("pros");
+					for(var prolist in resume[prop]){
+						/*get title of proficiency, eg: Graphic/programming/other*/
+						console.log("prolist:", resume[prop][prolist]);
+						var prolistEl =  document.createElement("div");
+						prolistEl.innerHTML = "<h5>"+prolist+"</h5>";
+						resume[prop][prolist].map(function(e){
+							var li = document.createElement("div");
+							li.textContent = e;
+							prolistEl.appendChild(li);
+						})
+						text.appendChild(prolistEl);
+					}
+					title.appendChild(text);
 				}else{
 					for(var sub in resume[prop]){
 						var text = document.createElement("div");
