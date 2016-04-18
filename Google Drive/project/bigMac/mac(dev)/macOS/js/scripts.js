@@ -176,6 +176,8 @@ var toolBarMenu = {
 		var t = document.querySelector(".sidemenu");
 		t.addEventListener("mousedown", onclick);
 		var toggle = true;
+
+
 		function onclick(){
 			if(toggle){
 				sideMenu.addFn();
@@ -196,7 +198,7 @@ var sideMenu = {
 	el: document.createElement("div"),
 	className: ["slideMenu"],
 	addFn: function(){
-		console.log("asdasdsasaadsa");
+
 		this.el.classList.add(this.className[0])
 		this.el.innerHTML = "";
 		Desktop.el.appendChild(this.el);
@@ -305,15 +307,47 @@ var todayTitle = {
 	el: document.createElement("div"),
 	className : ["todayTitle"],
 	addFn: function(){
+		var resume ;
 		this.el.classList.add(this.className[0]);
 		var inner;
 		this.el.innerHTML = "";
-		for (var i = 0; i < titles.length; i++) {
-			var title = document.createElement("div");
-			title.classList.add("todayTitles");
-			title.textContent = titles[i];/*<-----------*/
-			this.el.appendChild(title);
-		};
+		var _this = this;
+		ajax("resume.json", function(xhttp){
+			resume = JSON.parse(xhttp.responseText);
+			console.log(resume);
+			for(var prop in resume){
+				var title = document.createElement("div");
+				title.classList.add(prop.replace(" ", ''));
+				title.classList.add("todayTitles");
+				title.innerHTML = "<h1>"+prop+"</h1>";/*<-----------Education*/
+				if(prop == "Education"){
+					console.log(resume[prop]);
+					var text = document.createElement("div");
+					resume[prop].map(function(e){
+						var eudlists = document.createElement('div');
+						// eudlists.textContent = e;
+						for(var a in e){
+							console.log("a:", e[a]);
+							var li = document.createElement("div");
+							li.textContent = e[a];
+							eudlists.appendChild(li)
+						}
+						text.appendChild(eudlists);
+					})
+					title.appendChild(text);
+
+				}else{
+					for(var sub in resume[prop]){
+						var text = document.createElement("div");
+						text.textContent = resume[prop][sub];
+						title.appendChild(text);
+					}	
+				}
+				
+				_this.el.appendChild(title);	
+			}
+		});
+
 		return this.el;
 	}
 }
@@ -380,4 +414,15 @@ function animated(el, fn){
 	el.addEventListener("webkitAnimationEnd", fn,false);
 	el.addEventListener("animationend", fn,false);
 	el.addEventListener("oanimationend", fn,false);
+}
+
+function ajax(url, fn){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      	fn(xhttp);
+    }
+  };
+  xhttp.open("GET", url, true);
+  xhttp.send();
 }

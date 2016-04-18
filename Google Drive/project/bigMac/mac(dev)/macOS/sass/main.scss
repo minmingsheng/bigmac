@@ -442,7 +442,7 @@ $width-slideMenu: 20em;
 			padding-bottom: 1rem;
 			padding-left: 2rem;
 			h1{
-				font-size: $xFont;
+				font-size: $xFont*1.7;
 			}
 			p{
 				margin-top: 0.4rem;
@@ -451,7 +451,7 @@ $width-slideMenu: 20em;
 			span{
 				transition: all 100ms ease;
 				img{
-					transform: translate(0,0.2rem);
+					transform: translate(0.5rem,0.2rem);
 				}
 				&:hover{
 					filter: brightness(130%);
@@ -466,12 +466,19 @@ $width-slideMenu: 20em;
 			text-align: left;
 			color: rgba($wColor, 0.7);
 			.todayTitles{
-				background: $dbg;
 				line-height: 1.4rem;
-				padding-left: 2rem;
-				/*margin-top: 3em; */
-				height: 1.4rem;
+				height: auto;
 				font-size: $xFont;
+				padding-bottom: 1rem; /*<------A*/
+				h1{
+					background:$dbg;
+					padding-left: 2rem;
+					margin-bottom: 1rem;/*<------A*/
+				}
+				>div{
+					padding-left: 2rem;
+				}
+
 			}
 		}
 	}	

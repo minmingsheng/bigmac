@@ -1,0 +1,70 @@
+{  
+   "Education":[  
+      {  
+         "major":"Interactive Multimedia",
+         "year":"Sep 2015 - Apr 2016",
+         "certificate":"Post-Graduate Certificate",
+         "school":"Sheridan College",
+         "City":"Oakville"
+      },
+      {  
+         "major":"Interdisciplinary Design",
+         "year":"Sep 2014 - Apr 2015",
+         "certificate":"Post-Baccalaureate Certificate",
+         "school":"NSCAD University",
+         "City":"Halifax"
+      },
+      {  
+         "major":"Bachelor degree of arts",
+         "year":"Sep 2010 - Apr 2014",
+         "certificate":"Post-Graduate Certificate",
+         "school":"Shanghai University",
+         "City":"Shanghai"
+      }
+   ],
+   "Proficiencies":{  
+      "Graphics":[  
+         "PhotoShop",
+         "Hand draw",
+         "Illustrator",
+         "3dMx",
+         "wireframes",
+         "UX/UI Design"
+      ],
+      "Programming":[  
+         "HTML5",
+         "CSS",
+         "Javascript",
+         "PHP",
+         "React",
+         "Angular2",
+         "Ionic2",
+         "Node.js",
+         "jQuery.js",
+         "Command Line"
+      ],
+      "Others":[  
+         "Create.js",
+         "Three.js",
+         "Cannon.js",
+         "Arduino",
+         "Premiere",
+         "Three.js",
+         "Wordpress",
+         "After Effects"
+      ]
+   },
+   "Personal Skill":[  
+      "Problem solving",
+      "Creative",
+      "Design thinking",
+      "Rapid leaner",
+      "Wording in an Interdisciplinary team"
+   ],
+   "Work experience":{  
+      "year":"2013 - 2014",
+      "company":"Herun Group Shanghai Development Co., Ltd. Shanghai",
+      "position":"Graohic Designer",
+      "responsibility":"responsible for doing any any graphic design include business card, booklet, poster, logo, web visual design, etc"
+   }
+}
