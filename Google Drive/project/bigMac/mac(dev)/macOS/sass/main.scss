@@ -141,7 +141,7 @@ body{
 				border-radius: 2px;
 				background: $wColor;
 				/*animation: load 5s 1 ease-out;*/
-				animation: load 5s 1 ease-out;
+				animation: load 0.1s 1 ease-out;
 			}
 		}
 	
@@ -361,15 +361,60 @@ body{
 }
 
 /*********************** Dock *********************/
+$dock-width: 25rem;
 .dock{
+	box-sizing: border-box;
 	position: absolute;
-	width: 300px;
-	height: 100px;
+	width:$dock-width;
+	height: 4.3rem;
 	background: $dbg;
 	bottom: 0;
-	left:0;
-	right:0;
+	padding-top: 0.4em;
+	display:box;
+	left: 0;
+	right: 0;
 	margin: auto;
+	padding-left: 0.7em;
+	padding-right: 0.7em;
+	transition: all 0.3s ease;
+	border-top-right-radius: $regularRadius;
+	border-top-left-radius: $regularRadius;
+	&:hover{
+		width: $dock-width * 1.2;
+		/*transform: translate(0,-2em);*/
+	};
+	.iconContainer{
+		display: flex;
+		justify-content: space-around;
+		width: auto;
+		height: auto;
+		.icons{
+			position: relative;
+			width: 3.3rem;
+			height: 3.3rem;
+			transition: all 0.5s ease;
+			margin-left: 0.3em;
+			/*transform-origin: bottom -100px; */
+			/*border:1px solid red;*/
+			&:hover{
+			};
+			img{
+				width: 100%;
+				position: absolute;
+			}
+			.dot{
+			/*	width: 4px;
+				height: 4px;
+				border-radius: 2px;
+				background: red;
+				left:0;
+				right: 0;
+				margin:auto;
+				position: absolute;
+				bottom:-5px;*/
+			}
+		}
+	}
 }
 
 /*********************** sidemeue *********************/
@@ -671,6 +716,24 @@ $width-slideMenu: 22em;
 @keyframes apear{
 	from{
 		opacity: 0;
+	}
+}
+
+@keyframes openApp{
+	from, 20%, 53%, 80%, to {
+	  transform: translate3d(0,0,0);
+	}
+
+	40%, 43% {
+	  transform: translate3d(0, -30px, 0);
+	}
+
+	70% {
+	  transform: translate3d(0, -15px, 0);
+	}
+
+	90% {
+	  transform: translate3d(0,-4px,0);
 	}
 }
 

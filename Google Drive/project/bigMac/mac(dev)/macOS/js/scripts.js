@@ -22,6 +22,17 @@ var img = {
 	questionMark: "images/questionMark-23.png",
 	toolbarInfo: "images/toolbar-info.png",
 };
+
+var icons = [
+	"images/dockIcon-07.png",
+	"images/dockIcon-08.png",
+	"images/dockIcon-09.png",
+	"images/dockIcon-10.png",
+	"images/dockIcon-11.png",
+	"images/dockIcon-12.png",
+	"images/dockIcon-13.png",
+	// "images/dockIcon-14.png",
+]
 var btnImg = {
 	sleep: "images/Sleep-04.png",
 	shut: "images/shut-06.png",
@@ -169,11 +180,94 @@ var Dock = {
 	className: ["dock"],
 	addFn: function(){
 		this.el.classList.add(this.className[0]);
-		this.el.innerHTML = "<h1>Dock</h1>";
+		this.el.innerHTML = "";
 		Desktop.el.appendChild(this.el);
+		DockIcon.addFn();
+		this.hover();
+	},
+	hover: function(){
+		var icons = document.querySelectorAll(".icons");
+		var width = document.querySelector(".icons").getClientRects()[0].width;
+		var dockWidth = document.querySelector(".dock").getClientRects()[0].width;
+		var l = 8;
+		var m = 5;
+		var h = -4;
+		var mh = -1.5;
+		for (var i = 0; i < icons.length; i++) {
+			icons[i].addEventListener("mouseenter", function(e){
+				console.log(this.nextSibling);
+				console.log(this.previousSibling);
+				if(this.nextSibling){
+					this.nextSibling.style.width = m + "rem"
+					this.nextSibling.style.transform = "translate(0,"+mh+"em)"
+				}
+				if(this.previousSibling){
+					this.previousSibling.style.width = m + "rem"
+					this.previousSibling.style.transform = "translate(0,"+mh+"em)"
+				}
+				this.style.transition = "all 0.3s ease";
+				this.style.transform = "translate(0,"+h+"em)";
+				this.style.width = l+"rem";
+				console.log(document.querySelector(".dock"));
+				document.querySelector(".dock").style.width = dockWidth*1.2+"px";
+			})
+			icons[i].addEventListener("mouseout", function(e){
+				if(this.nextSibling){
+					this.nextSibling.style.width = width+"px";
+					this.nextSibling.style.transform = "translate(0,0)"
+				}
+				if(this.previousSibling){
+					this.previousSibling.style.width = width+"px";
+					this.previousSibling.style.transform = "translate(0,0)"
+				}
+				this.style.width = width + "px";
+				this.style.transform = "translate(0,0)";
+				this.style.transiition = "all 0.5s ease";
+				document.querySelector(".dock").style.width = dockWidth+"px";
+
+			})
+			icons[i].addEventListener('click', function(){
+				this.style.animation = "openApp 1.1s 4  ease";
+				if(this.nextSibling){
+					this.nextSibling.style.width = width+"px";
+					this.nextSibling.style.transform = "translate(0,0)"
+				}
+				if(this.previousSibling){
+					this.previousSibling.style.width = width+"px";
+					this.previousSibling.style.transform = "translate(0,0)"
+				}
+				this.style.width = width + "px";
+				this.style.transform = "translate(0,0)";
+				this.style.transiition = "all 0.5s ease";
+				document.querySelector(".dock").style.width = dockWidth+"px";
+				animated(this, function(){
+					console.log("jaosn"); /*open safiri*/
+				})
+			})
+		};
 	}
 }
 
+
+
+var DockIcon = {
+	addFn: function(){
+		var el = document.createElement("div");
+		el.classList.add("iconContainer");
+		for (var i = 0; i < icons.length; i++) {
+			var li = document.createElement("div");
+			li.classList.add("icons");	
+			var img = document.createElement('img');
+			img.setAttribute("src", icons[i]);
+			li.appendChild(img);
+			var dot = document.createElement("div");
+			dot.classList.add("dot");
+			li.appendChild(dot)
+			el.appendChild(li);
+		};
+		Dock.el.appendChild(el);
+	}
+}
 // child of ToolBar
 var toolBarMenu = {
 	leftTemplate: "<div><img src=" + img.apple + "  /></div><div>JASON</div><div>File</div><div>Edit</div><div>View</div><div>Go</div><div>Window</div><div>About Me</div>",
