@@ -46,8 +46,9 @@ h1{
 	font-weight: $light;
 }
 
-/********************************Helper********************************/
-
+/*****************************************************************************
+*                                   title                                  *
+*****************************************************************************/
 .centerbox{
 	width: 400px;
 	height: 70vh;
@@ -72,9 +73,18 @@ p{
 	width: 27em;
 	height: auto;
 	animation: apear 70ms 1 ease;
-	background: red;
+	/*background: red;*/
 	border-radius: $regularRadius;
 	box-shadow: 1px 1px 22px rgba($dbg, 0.5);
+	.title{
+		height: 1.5rem;
+		width: 100%;
+		background: url(../images/windowBar-24.png) center no-repeat;
+		background-size: 100%;
+		border-top-right-radius: $regularRadius;
+		border-top-left-radius: $regularRadius;
+
+	}
 }
 
 button{
@@ -86,6 +96,7 @@ button{
 	font-weight: $medium;
 	color:$wColor;
 	outline: none;
+	font-size: $xFont;
 	position: absolute;
 	right: 2rem;
 	&:active{
@@ -467,12 +478,6 @@ $width-slideMenu: 20em;
 }
 /************************windows********************/
 .info-window{
-	.title{
-		height: 2rem;
-		width: 100%;
-		background: url(../images/windowBar-24.png) no-repeat;
-		background-size: 100%;
-	}
 	.body{
 		height: 9rem;
 		width: 99.6%;

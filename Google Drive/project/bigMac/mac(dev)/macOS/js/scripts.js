@@ -294,6 +294,7 @@ var todayBody = {
 		document.querySelector('.interQuestion').addEventListener("click", function	(){
 			infoWindow.addFn();
 			infoWindow.buttonFn();
+			infoWindow.drag();
 		})
 	}
 }
@@ -334,8 +335,35 @@ var infoWindow = {
 		this.el.querySelector("button").addEventListener("click", function(){
 			this.parentElement.parentElement.parentElement.remove();
 		})
+	},
+	drag: function(){
+		var drag = false;
+		this.el.querySelector(".title").addEventListener("mousedown", mousedown)
+		function mousedown (e) {
+			var _this = this; 
+			var _width = _this.getClientRects()[0].width;
+			var _height = _this.getClientRects()[0].height;
+			var _left = _this.getClientRects()[0].left;
+			var _top = _this.getClientRects()[0].top;
+			var _distanceX = e.clientX-_left;
+			var _distanceY = e.clientY-_top;
+			console.log(_distanceX);
+			console.log(_distanceY);
+			this.style.cursor = "default";
+			window.onmousemove = function(e){
+				var _x = Math.max(e.clientX-_distanceX);
+				var _y = Math.max(25,e.clientY-_distanceY);
+				var _window  = _this.parentElement;
+				_window.style.top = _y+ "px";
+				_window.style.left = _x + "px";
+			}
+		}
+		this.el.querySelector(".title").addEventListener("mouseup", function(e){
+			window.onmousemove = "";
+		})
 	}
 }
+
 // ****************************************************************************
 // *                                  render                                  *
 // ****************************************************************************
