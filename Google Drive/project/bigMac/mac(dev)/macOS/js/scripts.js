@@ -254,6 +254,8 @@ var Dock = {
 				animated(this, function(){
 					console.log("jaosn"); /*open safiri*/
 					Safari.addFn();
+					Safari.close();
+					Safari.max();
 				})
 			})
 		};
@@ -283,6 +285,7 @@ var Safari = {
 		for (var i = 0; i < leftBtnsImg.length; i++) {
 			var btn = document.createElement("img");
 			btn.setAttribute("src", leftBtnsImg[i]);
+			btn.setAttribute("class", "btn"+i.toString());
 			leftBtns.appendChild(btn);
 		};
 
@@ -292,6 +295,7 @@ var Safari = {
 				c[i].setAttribute("src", leftBtnsImgHover[i])
 			};
 		}, true)
+
 		leftBtns.addEventListener("mouseout", function(){
 			var c = this.children;
 			for (var i = 0; i < c.length; i++) {
@@ -348,6 +352,59 @@ var Safari = {
 					windows[j].style.zIndex = "10";
 				};
 				this.style.zIndex = "100";
+			})
+		};
+	},
+	close: function(){
+		var closes = document.querySelectorAll(".btn0");
+		for (var i = 0; i < closes.length; i++) {
+			closes[i].addEventListener("click", function(){
+				/*close window*/
+				this.parentElement.parentElement.parentElement.remove();
+			})
+		};
+	},
+	max: function(){
+		var max = document.querySelectorAll(".btn2");
+		var maxB = false;
+		var _top;
+		var _left;
+		var _width;
+		var _height;
+		for (var i = 0; i < max.length; i++) {
+			max[i].addEventListener("click", function(){
+				/*max window*/
+				if(!maxB){
+					_left = this.parentElement.parentElement.parentElement.getClientRects()[0].left;
+					_top = this.parentElement.parentElement.parentElement.getClientRects()[0].top;
+					_width = this.parentElement.parentElement.parentElement.getClientRects()[0].width;
+					_height = this.parentElement.parentElement.parentElement.getClientRects()[0].height;
+					console.log("temp",_left);
+					console.log("temp",_top);
+					this.parentElement.parentElement.parentElement.style.transition = "all 0.4s ease";
+					this.parentElement.parentElement.parentElement.style.width = window.innerWidth+ "px";
+					this.parentElement.parentElement.parentElement.style.height = (window.innerHeight-60) + "px";
+					this.parentElement.parentElement.parentElement.style.top = 0+ "px";
+					this.parentElement.parentElement.parentElement.style.left = 0+ "px";
+					var _this = this;
+					setTimeout(function(){
+						_this.parentElement.parentElement.parentElement.style.transition = "all 0s ease";
+					},1001)
+					maxB =true;
+				}else{
+					this.parentElement.parentElement.parentElement.style.transition = "all 0.4s ease";
+					this.parentElement.parentElement.parentElement.style.width = window.innerWidth/2+ "px";
+					this.parentElement.parentElement.parentElement.style.top = _top+ "px";
+					this.parentElement.parentElement.parentElement.style.left = _left+ "px";
+					this.parentElement.parentElement.parentElement.style.width = _width+ "px";
+					this.parentElement.parentElement.parentElement.style.height = _height+ "px";
+					var _this = this;
+					setTimeout(function(){
+						_this.parentElement.parentElement.parentElement.style.transition = "all 0s ease";
+					},1001)
+					maxB =false;
+				}
+
 			})
 		};
 	}
