@@ -15,6 +15,7 @@ $active:    #0063ec;
 $tabToday: #a0a1a3;
 $tabNotification: #636464;
 $mediumGray: #232323;
+$appleWhite: #f0f0f0;
 
 /*font color*/
 $normalFontColor: #383838;
@@ -359,10 +360,40 @@ body{
 		}
 	}
 }
+/*********************** safari *********************/
+.safari{
+	background: pink;
+	.title{
+		height: 2.3rem;
+		background-position: center top ;
+		padding: 0.4rem;
+		box-sizing: border-box;
+		display: flex;
+		.leftBtns{
+			width:24%;
+		}
+		img{
+			width: 1.5rem;
+			&:active{
+				filter: brightness(90%);
+			};
+		}
+		.safariAddress{
+			width:50%;
+			height: 96%;
+			background: $appleWhite;
+			border-radius: $regularRadius/1.2;
+			border:0.4px solid  rgba($mediumGray, 0.2);
+			box-shadow: 1px 2px 11px rgba($mediumGray, 0.1);
+		}
+	}
+}
+
 
 /*********************** Dock *********************/
 $dock-width: 25rem;
 .dock{
+	z-index: 1000;
 	box-sizing: border-box;
 	position: absolute;
 	width:$dock-width;

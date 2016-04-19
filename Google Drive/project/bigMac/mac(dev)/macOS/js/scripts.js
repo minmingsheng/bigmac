@@ -23,6 +23,17 @@ var img = {
 	toolbarInfo: "images/toolbar-info.png",
 };
 
+var leftBtnsImg = [
+"images/leftBtn-close.png",
+"images/leftBtn-min.png",
+"images/leftBtn-max.png",
+]
+var leftBtnsImgHover = [
+"images/leftBtn-close-hover.png",
+"images/leftBtn-min-hover.png",
+"images/leftBtn-max-hover.png",
+]
+
 var icons = [
 	"images/dockIcon-07.png",
 	"images/dockIcon-08.png",
@@ -242,12 +253,105 @@ var Dock = {
 				document.querySelector(".dock").style.width = dockWidth+"px";
 				animated(this, function(){
 					console.log("jaosn"); /*open safiri*/
+					Safari.addFn();
 				})
 			})
 		};
 	}
 }
 
+var Safari = {
+	// el: document.createElement("div"),
+	className: ["window", "safari"],
+	addFn: function(a){
+		var el = document.createElement("div");
+		/*style*/
+		el.style.width = window.innerWidth/2 + "px";
+		el.style.height = window.innerHeight/1.2 + "px";
+		// el.style.background = "red";
+		el.classList.add(this.className[0]);
+		el.classList.add(this.className[1]);
+		el.innerHTML = "";
+
+		var title = document.createElement("div");
+		title.classList.add("title");
+
+		var leftBtns = document.createElement('div');
+		leftBtns.classList.add("leftBtns");
+
+		/*leftbtn*/
+		for (var i = 0; i < leftBtnsImg.length; i++) {
+			var btn = document.createElement("img");
+			btn.setAttribute("src", leftBtnsImg[i]);
+			leftBtns.appendChild(btn);
+		};
+
+		leftBtns.addEventListener("mouseenter", function(){
+			var c = this.children;
+			for (var i = 0; i < c.length; i++) {
+				c[i].setAttribute("src", leftBtnsImgHover[i])
+			};
+		}, true)
+		leftBtns.addEventListener("mouseout", function(){
+			var c = this.children;
+			for (var i = 0; i < c.length; i++) {
+				c[i].setAttribute("src", leftBtnsImg[i])
+			};
+		}, true)
+
+
+
+		title.appendChild(leftBtns);/*<------add btn */
+
+		/*safariAddress*/
+		var safariAddress = document.createElement("div");
+		safariAddress.classList.add("safariAddress");
+		title.appendChild(safariAddress);
+
+		el.appendChild(title);
+		Desktop.el.appendChild(el);
+		this.drag(el);
+		this.index();
+	},
+	drag: function(el){
+		var drag = false;
+		el.querySelector(".title").addEventListener("mousedown", mousedown)
+		function mousedown (e) {
+			var _this = this; 
+			var _width = _this.getClientRects()[0].width;
+			var _height = _this.getClientRects()[0].height;
+			var _left = _this.getClientRects()[0].left;
+			var _top = _this.getClientRects()[0].top;
+			var _distanceX = e.clientX-_left;
+			var _distanceY = e.clientY-_top;
+			console.log(_distanceX);
+			console.log(_distanceY);
+			this.style.cursor = "default";
+			// this.parentElement.style.zIndex += 20;
+			window.onmousemove = function(e){
+				var _x = Math.max(e.clientX-_distanceX);
+				var _y = Math.max(25,e.clientY-_distanceY);
+				var _window  = _this.parentElement;
+				_window.style.top = _y+ "px";
+				_window.style.left = _x + "px";
+			}
+		}
+		el.querySelector(".title").addEventListener("mouseup", function(e){
+			window.onmousemove = "";
+		})
+	},
+	index: function(){
+		var windows = document.querySelectorAll(".window"); 
+		for (var i = 0; i < windows.length; i++) {
+			windows[i].addEventListener("mousedown", function(){
+				for (var j = 0; j < windows.length; j++) {
+					windows[j].style.zIndex = "10";
+				};
+				this.style.zIndex = "100";
+			})
+		};
+	}
+}
 
 
 var DockIcon = {
@@ -266,7 +370,8 @@ var DockIcon = {
 			el.appendChild(li);
 		};
 		Dock.el.appendChild(el);
-	}
+	},
+
 }
 // child of ToolBar
 var toolBarMenu = {
@@ -549,6 +654,7 @@ var infoWindow = {
 			console.log(_distanceX);
 			console.log(_distanceY);
 			this.style.cursor = "default";
+			// this.parentElement.style.zIndex += 20;
 			window.onmousemove = function(e){
 				var _x = Math.max(e.clientX-_distanceX);
 				var _y = Math.max(25,e.clientY-_distanceY);
