@@ -174,16 +174,19 @@ var Desktop = {
 		Dock.addFn(); /*<-----------------*/
 		Folder.addFn(); /*<-----------------*/
 		Folder.addFn(); /*<-----------------*/
+		Folder.addFn(); /*<-----------------*/
+		Folder.addFn(); /*<-----------------*/
 		
 	},
 
 }
 
 var Folder = {
-	el: document.createElement("div"),
+	el: "",
 	template: "",
 	className: ["folder"],
 	addFn: function(){
+		this.el = document.createElement("div");
 		console.log("jaosn");
 		this.el.classList.add(this.className[0]);
 		this.el.innerHTML = "";
@@ -207,6 +210,7 @@ var Folder = {
 
 		Desktop.el.appendChild(this.el);
 		this.drag();
+		this.active();
 	},
 	drag: function(){
 		var drag = false;
@@ -236,17 +240,40 @@ var Folder = {
 		this.el.addEventListener("mouseup", function(e){
 			window.onmousemove = "";
 		})
-	}
+	},
+	active:function(){
+		var folders = document.querySelectorAll(".folder"); 
+		for (var i = 0; i < folders.length; i++) {
+			folders[i].addEventListener("click", function(){
+				for (var j = 0; j < folders.length; j++) {
+					folders[j].querySelector("img").classList.remove("activeFolder");
+					folders[j].querySelector("p").classList.remove("activeFolderP");
+				};
+				this.querySelector('img').classList.add("activeFolder");
+				this.querySelector('p').classList.add("activeFolderP");
+			})
+		};
+		window.addEventListener("click", function(){
+			var folders = document.querySelectorAll(".folder"); 
+			for (var i = 0; i < folders.length; i++) {
+				folders[i].querySelector("img").classList.remove("activeFolder");
+				folders[i].querySelector("p").classList.remove("activeFolderP");
+			}
+		}, true)
+	} 
 
 }	
 
 var Finder = {	
-	el: document.createElement("div"),
+	el: "",
 	className: ["window","finder"],
 	addFn: function(){
+		this.el = document.createElement("div");
 		this.el.classList.add(this.className[0]);
 		this.el.classList.add(this.className[1]);
 		this.el.innerHTML = "";
+		this.el.style.top = "10px";
+		this.el.style.left = "10px";
 
 		var title = document.createElement("div");
 		title.setAttribute("class", "title");
@@ -280,6 +307,10 @@ var Finder = {
 
 		title.appendChild(leftBtns);
 
+/*--------------------------title--------------------------*/
+
+
+
 /*--------------------------resize Bar--------------------------*/
 		
 		for (var i = 0; i < 8; i++) {
@@ -297,49 +328,55 @@ var Finder = {
 		 // Safari.drag(this.el);
 		 this.drag();
 		 this.resize();
+		 this.index();
 
 	},
 	resize: function(){
 		/*top bar*/
-		var bar0 = document.querySelector(".resizeBar0");
-		bar0.addEventListener("mouseenter", function(){
-			console.log(this.parentElement);
-			var target = this.parentElement;
-			this.style.cursor= "n-resize";
-			this.addEventListener("mousedown", function(){
-				var _top = target.getClientRects()[0].top;
-				var _height = target.getClientRects()[0].height;
-				document.body.style.cursor= "n-resize";
-				window.onmousemove = function(e){
-					var _targetHeight = _height+(_top-e.clientY);
-					 _targetHeight = Math.max(200,  _targetHeight);
-					target.style.height = _targetHeight+"px";/*√*/
-					target.style.top = e.clientY +"px";
-					target.getClientRects()[0].left = 0;
-				}
+		var bar0 = document.querySelectorAll(".resizeBar0");
+		for (var i = 0; i < bar0.length; i++) {
+				bar0[i].addEventListener("mouseenter", function(){
+				console.log(this.parentElement);
+				var target = this.parentElement;
+				this.style.cursor= "n-resize";
+				this.addEventListener("mousedown", function(){
+					var _top = target.getClientRects()[0].top;
+					var _height = target.getClientRects()[0].height;
+					document.body.style.cursor= "n-resize";
+					window.onmousemove = function(e){
+						var _targetHeight = _height+(_top-e.clientY);
+						 _targetHeight = Math.max(200,  _targetHeight);
+						target.style.height = _targetHeight+"px";/*√*/
+						target.style.top = e.clientY +"px";
+						target.getClientRects()[0].left = 0;
+					}
+				})
 			})
-		})
+		};
 		/*bottom bar*/
-		var bar2 = document.querySelector(".resizeBar2");
-		bar2.addEventListener("mouseenter", function(){
-			console.log(this.parentElement);
-			var target = this.parentElement;
-			this.style.cursor= "s-resize";
-			this.addEventListener("mousedown", function(){
-				var _top = target.getClientRects()[0].top;
-				var _height = target.getClientRects()[0].height;
-				document.body.style.cursor= "s-resize";
-				window.onmousemove = function(e){
-					var _targetHeight = Math.max(0, e.clientY-_top);
-					target.style.height = (e.clientY-_top)+"px";/*√*/
-				// 	target.style.top = e.clientY +"px";
-				// 	target.getClientRects()[0].left = 0;
-				}
+		var bar2 = document.querySelectorAll(".resizeBar2");
+		for (var i = 0; i < bar2.length; i++) {
+				bar2[i].addEventListener("mouseenter", function(){
+				console.log(this.parentElement);
+				var target = this.parentElement;
+				this.style.cursor= "s-resize";
+				this.addEventListener("mousedown", function(){
+					var _top = target.getClientRects()[0].top;
+					var _height = target.getClientRects()[0].height;
+					document.body.style.cursor= "s-resize";
+					window.onmousemove = function(e){
+						var _targetHeight = Math.max(0, e.clientY-_top);
+						target.style.height = (e.clientY-_top)+"px";/*√*/
+					// 	target.style.top = e.clientY +"px";
+					// 	target.getClientRects()[0].left = 0;
+					}
+				})
 			})
-		})
+		};
 		/*right bar*/
-		var bar1 = document.querySelector(".resizeBar1");
-		bar1.addEventListener("mouseenter", function(){
+		var bar1 = document.querySelectorAll(".resizeBar1");
+		for (var i = 0; i < bar1.length; i++) {
+			bar1[i].addEventListener("mouseenter", function(){
 			console.log(this.parentElement);
 			var target = this.parentElement;
 			this.style.cursor= "e-resize";
@@ -354,9 +391,11 @@ var Finder = {
 				}
 			})
 		})
+		};
 		/*left bar*/
-		var bar3 = document.querySelector(".resizeBar3");
-		bar3.addEventListener("mouseenter", function(){
+		var bar3 = document.querySelectorAll(".resizeBar3");
+		for (var i = 0; i < bar3.length; i++) {
+			bar3[i].addEventListener("mouseenter", function(){
 			console.log(this.parentElement);
 			var target = this.parentElement;
 			this.style.cursor= "w-resize";
@@ -374,9 +413,11 @@ var Finder = {
 				}
 			})
 		})
+		};
 		/*right top bar*/
-		var bar4 = document.querySelector(".resizeBar4");
-		bar4.addEventListener("mouseenter", function(){
+		var bar4 = document.querySelectorAll(".resizeBar4");
+		for (var i = 0; i < bar4.length; i++) {
+			bar4[i].addEventListener("mouseenter", function(){
 			console.log(this.parentElement);
 			var target = this.parentElement;
 			this.style.cursor= "nw-resize";
@@ -401,8 +442,10 @@ var Finder = {
 				}
 			})
 		})
+		};
 		var bar5 = document.querySelector(".resizeBar5");
-		bar5.addEventListener("mouseenter", function(){
+		for (var i = 0; i < bar5.length; i++) {
+			bar5[i].addEventListener("mouseenter", function(){
 			console.log(this.parentElement);
 			var target = this.parentElement;
 			this.style.cursor= "ne-resize";
@@ -429,8 +472,10 @@ var Finder = {
 				}
 			})
 		})
-		var bar6 = document.querySelector(".resizeBar6");
-		bar6.addEventListener("mouseenter", function(){
+		};
+		var bar6 = document.querySelectorAll(".resizeBar6");
+		for (var i = 0; i < bar6.length; i++) {
+			bar6[i].addEventListener("mouseenter", function(){
 			console.log(this.parentElement);
 			var target = this.parentElement;
 			this.style.cursor= "se-resize";
@@ -454,8 +499,10 @@ var Finder = {
 				}
 			})
 		})
+		};
 		var bar7 = document.querySelector(".resizeBar7");
-		bar7.addEventListener("mouseenter", function(){
+		for (var i = 0; i < bar7.length; i++) {
+			bar7[i].addEventListener("mouseenter", function(){
 			console.log(this.parentElement);
 			var target = this.parentElement;
 			this.style.cursor= "sw-resize";
@@ -480,6 +527,7 @@ var Finder = {
 				}
 			})
 		})
+		};
 		window.addEventListener("mouseup", function(e){
 			window.onmousemove = "";
 			document.body.style.cursor= "default";
@@ -487,7 +535,10 @@ var Finder = {
 	},
 	drag: function(el){
 		var drag = false;
-		this.el.querySelector(".title").addEventListener("mousedown", mousedown)
+		var titles = document.querySelectorAll(".title");
+		for (var i = 0; i < titles.length; i++) {
+			titles[i].addEventListener("mousedown", mousedown)
+		};
 		// document.querySelector(".title").addEventListener("mousedown", mousedown)
 		function mousedown (e) {
 			var _this = this; 
@@ -505,13 +556,25 @@ var Finder = {
 				var _x = Math.max(e.clientX-_distanceX);
 				var _y = Math.max(25,e.clientY-_distanceY);
 				var _window  = _this.parentElement;
-				_window.style.top = (_y-22)+ "px";
+				_window.style.top = (_y)+ "px";
 				_window.style.left = _x + "px";
 			}
 		}
 		this.el.querySelector(".title").addEventListener("mouseup", function(e){
 			window.onmousemove = "";
 		})
+	},
+
+	index: function(){
+		var windows = document.querySelectorAll(".window"); 
+		for (var i = 0; i < windows.length; i++) {
+			windows[i].addEventListener("mousedown", function(){
+				for (var j = 0; j < windows.length; j++) {
+					windows[j].style.zIndex = "10";
+				};
+				this.style.zIndex = "100";
+			})
+		};
 	},
 
 }
@@ -840,7 +903,8 @@ var toolBarMenu = {
 	},
 	activeSideMenu: function(){
 		var t = document.querySelector(".sidemenu");
-		t.addEventListener("mousedown", onclick);
+		t.addEventListener("click", onclick);
+		
 		var toggle = true;
 
 
