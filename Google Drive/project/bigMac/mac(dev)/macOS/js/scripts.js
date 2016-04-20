@@ -23,6 +23,97 @@ var img = {
 	toolbarInfo: "images/toolbar-info.png",
 };
 
+var bookDesign = [
+	"images/book_design/a.jpg",
+	"images/book_design/b.jpg",
+	"images/book_design/c.jpg",
+	"images/book_design/d.jpg",
+	"images/book_design/e.jpg",
+	"images/book_design/f.jpg",
+	"images/book_design/g.jpg",
+	"images/book_design/h.jpg",
+	"images/book_design/i.jpg",
+	"images/book_design/j.jpg",
+	"images/book_design/k.jpg",
+	"images/book_design/l.jpg",
+]
+
+var bookDesignInfo = [
+{
+	name: "a.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "b.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "c.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "d.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "e.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "f.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "g.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "h.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "i.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "j.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "k.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+{
+	name: "l.jpg",
+	date: "2015",
+	kind:"graphics"
+
+},
+
+]
+
 var forderImg = {
 	folder: "images/folder-21.png",
 }
@@ -330,16 +421,6 @@ var Finder = {
 
 		title.appendChild(folderTitle);
 
-		// var forderImg = {
-		// 	folder: "images/folder-21.png",
-		// 	list  : "images/folderIcon-list.png",
-		// 	block  : "images/folderIcon-block.png",
-		// 	swipe  : "images/folderIcon-swipe.png",
-		// 	listActive : "images/folderIcon-list-active.png",
-		// 	blockActive : "images/folderIcon-block-active.png",
-		// 	swipeActive	: "images/folderIcon-swipe-active.png"
-		// }
-
 
 		var layoutBtn = document.createElement("div");
 
@@ -380,10 +461,6 @@ var Finder = {
 
 		finderBody.appendChild(rightPart);
 
-
-
-
-
 /*--------------------------resize Bar--------------------------*/
 		
 		for (var i = 0; i < 8; i++) {
@@ -404,6 +481,8 @@ var Finder = {
 		 this.resize();
 		 this.index();
 		 this.activeLayout();
+		 this.swipe();
+		 this.clickDownList();
 	},
 	resize: function(){
 		/*top bar*/
@@ -707,22 +786,175 @@ var Finder = {
 		var t = boss.querySelector(".rightPart");
 		t.innerHTML = "";
 		// t.textContent  = "swipe"; 
-
+/*-------------------  uP ------------------------*/
 		var  up = document.createElement("div");
 		up.classList.add("up");
-		up.textContent = "up";
+		// up.textContent = "up";
 
-		
+		var imgContainer = document.createElement("div");
+		imgContainer.classList.add("imgContainer");
+		for (var i = 0; i < bookDesign.length; i++) {
+			var imgList = document.createElement("div");
+			imgList.innerHTML = "<img src="+  bookDesign[i] +" />"
+			imgContainer.appendChild(imgList);
+		};
 
+		up.appendChild(imgContainer);
 		t.appendChild(up);
 
+/*-------------------  Down ------------------------*/
 		var  down = document.createElement("div");
 		down.classList.add("down");
-		down.textContent = "down";
+		// down.textContent = "down";
+
+		var downBar = document.createElement('div');
+		downBar.classList.add("downBar");
+		downBar.textContent = "downBar";
+		down.appendChild(downBar);
+
+		var downList = document.createElement("div");
+		downList.classList.add("downList");
+		// downList.textContent = "downList";
+		down.appendChild(downList);
+
+		for (var i = 0; i < bookDesignInfo.length; i++) {
+			var downSingle = document.createElement("div");
+			downSingle.classList.add("downSingle");
+			
+			var name = document.createElement("div");
+			name.textContent = bookDesignInfo[i].name;
+			downSingle.appendChild(name);
+
+			var date = document.createElement("div");
+			date.textContent = bookDesignInfo[i].date;
+			downSingle.appendChild(date);
+
+			var kind = document.createElement("div");
+			kind.textContent = bookDesignInfo[i].kind;
+			downSingle.appendChild(kind);
+
+
+			downList.appendChild(downSingle);
+
+
+		};
+
+
+		var input = document.createElement("input");
+		input.setAttribute("type", "text");
+		
+		input.setAttribute("class", "fakeInput");
+		down.appendChild(input)
+
 
 		t.appendChild(down);
 
 		console.log("target,", t);
+	},
+	clickDownList: function(){
+		var _this = this;
+		var l = this.el.querySelectorAll(".downSingle");
+		for (var i = 0; i < l.length; i++) {
+			l[i].addEventListener('click', function(){
+				/*clean*/
+				for (var i = 0; i < l.length; i++) {
+					l[i].classList.remove("activeDownList");
+					var words = l[i].children;
+					for (var j = 0; j < words.length; j++) {
+						words[j].style.color = '#656565';
+					};
+				};
+				/*acttive blue bakground*/
+				var target = this.children[0].textContent;
+				console.log("target", target);
+				var pics = _this.el.querySelectorAll(".imgContainer div");
+				console.log("pics.", pics);
+				for (var i = 0; i < pics.length; i++) {
+					var temp = pics[i].innerHTML;
+					if(new RegExp(target).test(temp)){
+						var target = pics[i];
+						var offsetLeft = target.offsetLeft;
+						target.parentElement.parentElement.scrollLeft = offsetLeft-444;
+						for (var i = 0; i < pics.length; i++) {
+							pics[i].classList.remove("scale");
+						};
+						target.classList.add("scale");
+
+						setTimeout(function(){
+							var offsetLeft = target.offsetLeft;
+							
+							var move = setInterval(function(){
+								target.parentElement.parentElement.scrollLeft+=2
+								if( target.parentElement.parentElement.scrollLeft == offsetLeft-300){
+									clearInterval(move)
+								}
+							}, 11)
+							console.log("ad11~~~~~~~");
+						}, 222)
+
+						break;
+					}
+				};
+
+				this.classList.add("activeDownList");
+				var words2 = this.children;
+				for (var k = 0; k < words2.length; k++) {
+					words2[k].style.color = "#f0f0f0";
+				};
+			}, false)
+		};
+		
+		// this.el.addEventListener("keydown", function(e){
+		// 	e.preventDefault();
+		// 	console.log(e.keyCode);
+		// })
+	},
+	swipe:function(){
+		var silderC = this.el.querySelector(".up");
+		var div = this.el.querySelector(".up").querySelector(".imgContainer").children;
+		var currScrollLeft ;
+		for (var i = 0; i < div.length; i++) {
+			var temp; 
+			div[i].addEventListener("mousedown", function(){
+
+				temp =  this.offsetLeft;
+				currScrollLeft = silderC.scrollLeft;
+			})
+			div[i].addEventListener("mouseup", function(){
+				for (var i = 0; i < div.length; i++) {
+					div[i].classList.remove("scale");
+				};
+				
+				moveScroll(temp,silderC, currScrollLeft);
+				this.classList.add("scale");
+			})
+
+		};
+		silderC.addEventListener("scroll", function(){
+			console.log("sliderC.scrollLeft", silderC.scrollLeft);
+		})
+		function moveScroll(temp, silderC, currScrollLeft){
+			// silderC.scrollLeft = Math.max(temp-300, 0);
+			var t = Math.max(temp-300, 0)-currScrollLeft;
+			console.log("cccccc: ", t);
+			
+			// for (var i = 0; i <t; i++) {
+			// 	// console.log("adsadas");
+			// 	var setInterval
+			// 	setTimeout(function(){
+			// 		silderC.scrollLeft += 1;
+			// 		console.log("silderC.scrollLeft; ", silderC.scrollLeft);
+			// 	}, 999)
+			// };
+			var a = setInterval(function(){
+				silderC.scrollLeft += 11;
+				if(silderC.scrollLeft > t){
+					clearInterval(a)
+				}
+			},1)
+			
+			
+		}
 	}
 
 
