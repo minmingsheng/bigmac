@@ -23,6 +23,10 @@ var img = {
 	toolbarInfo: "images/toolbar-info.png",
 };
 
+var forderImg = {
+	folder: "images/folder-21.png",
+}
+
 var leftBtnsImg = [
 "images/leftBtn-close.png",
 "images/leftBtn-min.png",
@@ -35,13 +39,13 @@ var leftBtnsImgHover = [
 ]
 
 var icons = [
-	"images/dockIcon-07.png",
-	"images/dockIcon-08.png",
-	"images/dockIcon-09.png",
-	"images/dockIcon-10.png",
-	"images/dockIcon-11.png",
-	"images/dockIcon-12.png",
-	"images/dockIcon-13.png",
+	"images/finderIcon.png",
+	"images/githubIcon.png",
+	"images/twitterIcon.png",
+	"images/safariIcon.png",
+	"images/messageIcon.png",
+	"images/LinkedIcon.png",
+	"images/dockIcon.png",
 	// "images/dockIcon-14.png",
 ]
 var btnImg = {
@@ -168,7 +172,348 @@ var Desktop = {
 		document.body.appendChild(this.el);
 		ToolBar.addFn(); /*<----------------*/
 		Dock.addFn(); /*<-----------------*/
+		Folder.addFn(); /*<-----------------*/
+		Folder.addFn(); /*<-----------------*/
+		
+	},
+
+}
+
+var Folder = {
+	el: document.createElement("div"),
+	template: "",
+	className: ["folder"],
+	addFn: function(){
+		console.log("jaosn");
+		this.el.classList.add(this.className[0]);
+		this.el.innerHTML = "";
+
+		var img = document.createElement("img");
+		img.setAttribute("src", forderImg.folder);
+		this.el.appendChild(img);
+
+		var p = document.createElement("p");
+		p.setAttribute("class", "title");
+		p.textContent = "folder"
+		this.el.appendChild(p);
+
+		this.el.style.top = "30px";
+		this.el.style.left = "30px";
+
+		/*open folder*/
+		this.el.addEventListener("dblclick", function(){
+			Finder.addFn();
+		})
+
+		Desktop.el.appendChild(this.el);
+		this.drag();
+	},
+	drag: function(){
+		var drag = false;
+		this.el.addEventListener("mousedown", mousedown, true)
+		function mousedown (e) {
+			// console.log(this);
+			var _this = this; 
+			var _width = _this.getClientRects()[0].width;
+			var _height = _this.getClientRects()[0].height;
+			var _left = _this.getClientRects()[0].left;
+			var _top = _this.getClientRects()[0].top;
+			var _distanceX = e.clientX-_left;
+			var _distanceY = e.clientY-_top;
+			console.log(_distanceX);
+			console.log(_distanceY);
+			this.style.cursor = "default";
+			// this.parentElement.style.zIndex += 20;
+			window.onmousemove = function(e){
+				// console.log("adasdasdasasdadsas");
+				var _x = Math.max(e.clientX-_distanceX);
+				var _y = Math.max(25,e.clientY-_distanceY);
+				// var _window  = _this.parentElement;
+				_this.style.top = _y+ "px";
+				_this.style.left = _x + "px";
+			}
+		}
+		this.el.addEventListener("mouseup", function(e){
+			window.onmousemove = "";
+		})
 	}
+
+}	
+
+var Finder = {	
+	el: document.createElement("div"),
+	className: ["window","finder"],
+	addFn: function(){
+		this.el.classList.add(this.className[0]);
+		this.el.classList.add(this.className[1]);
+		this.el.innerHTML = "";
+
+		var title = document.createElement("div");
+		title.setAttribute("class", "title");
+
+
+/*--------------------------leftBtn--------------------------*/
+		var leftBtns = document.createElement('div');
+		leftBtns.classList.add("leftBtns");
+
+		/*leftbtn*/
+		for (var i = 0; i < leftBtnsImg.length; i++) {
+			var btn = document.createElement("img");
+			btn.setAttribute("src", leftBtnsImg[i]);
+			btn.setAttribute("class", "btn"+i.toString());
+			leftBtns.appendChild(btn);
+		};
+
+		leftBtns.addEventListener("mouseenter", function(){
+			var c = this.children;
+			for (var i = 0; i < c.length; i++) {
+				c[i].setAttribute("src", leftBtnsImgHover[i])
+			};
+		}, true)
+
+		leftBtns.addEventListener("mouseout", function(){
+			var c = this.children;
+			for (var i = 0; i < c.length; i++) {
+				c[i].setAttribute("src", leftBtnsImg[i])
+			};
+		}, true)
+
+		title.appendChild(leftBtns);
+
+/*--------------------------resize Bar--------------------------*/
+		
+		for (var i = 0; i < 8; i++) {
+			var resizeBar = document.createElement("div");
+			resizeBar.classList.add("resizeBar"+ i.toString());						
+			this.el.appendChild(resizeBar);
+		};
+
+		this.el.appendChild(title);
+		Desktop.el.appendChild(this.el);
+
+		/*call function */
+		 Safari.max();
+		 Safari.close();
+		 // Safari.drag(this.el);
+		 this.drag();
+		 this.resize();
+
+	},
+	resize: function(){
+		/*top bar*/
+		var bar0 = document.querySelector(".resizeBar0");
+		bar0.addEventListener("mouseenter", function(){
+			console.log(this.parentElement);
+			var target = this.parentElement;
+			this.style.cursor= "n-resize";
+			this.addEventListener("mousedown", function(){
+				var _top = target.getClientRects()[0].top;
+				var _height = target.getClientRects()[0].height;
+				document.body.style.cursor= "n-resize";
+				window.onmousemove = function(e){
+					var _targetHeight = _height+(_top-e.clientY);
+					 _targetHeight = Math.max(200,  _targetHeight);
+					target.style.height = _targetHeight+"px";/*√*/
+					target.style.top = e.clientY +"px";
+					target.getClientRects()[0].left = 0;
+				}
+			})
+		})
+		/*bottom bar*/
+		var bar2 = document.querySelector(".resizeBar2");
+		bar2.addEventListener("mouseenter", function(){
+			console.log(this.parentElement);
+			var target = this.parentElement;
+			this.style.cursor= "s-resize";
+			this.addEventListener("mousedown", function(){
+				var _top = target.getClientRects()[0].top;
+				var _height = target.getClientRects()[0].height;
+				document.body.style.cursor= "s-resize";
+				window.onmousemove = function(e){
+					var _targetHeight = Math.max(0, e.clientY-_top);
+					target.style.height = (e.clientY-_top)+"px";/*√*/
+				// 	target.style.top = e.clientY +"px";
+				// 	target.getClientRects()[0].left = 0;
+				}
+			})
+		})
+		/*right bar*/
+		var bar1 = document.querySelector(".resizeBar1");
+		bar1.addEventListener("mouseenter", function(){
+			console.log(this.parentElement);
+			var target = this.parentElement;
+			this.style.cursor= "e-resize";
+			this.addEventListener("mousedown", function(e){
+				var _left = target.getClientRects()[0].left;
+				document.body.style.cursor= "e-resize";
+				window.onmousemove = function(e){
+					var _targetWidth = Math.max(300,e.clientX-_left);
+					target.style.width = _targetWidth+"px";/*√*/
+				// 	target.style.top = e.clientY +"px";
+				// 	target.getClientRects()[0].left = 0;
+				}
+			})
+		})
+		/*left bar*/
+		var bar3 = document.querySelector(".resizeBar3");
+		bar3.addEventListener("mouseenter", function(){
+			console.log(this.parentElement);
+			var target = this.parentElement;
+			this.style.cursor= "w-resize";
+			this.addEventListener("mousedown", function(e){
+				var _left = target.getClientRects()[0].left;
+				var _width= target.getClientRects()[0].width;
+				var _top = target.getClientRects()[0].top;
+				var _height = target.getClientRects()[0].height;
+				document.body.style.cursor= "w-resize";
+				window.onmousemove = function(e){
+					var _targetWidth = Math.max(300,_width+(_left-e.clientX));
+					target.style.width = _targetWidth+"px";/*√*/
+					target.style.left = e.clientX +"px";
+					// target.getClientRects()[0].left = 0;
+				}
+			})
+		})
+		/*right top bar*/
+		var bar4 = document.querySelector(".resizeBar4");
+		bar4.addEventListener("mouseenter", function(){
+			console.log(this.parentElement);
+			var target = this.parentElement;
+			this.style.cursor= "nw-resize";
+			this.addEventListener("mousedown", function(e){
+				var _left = target.getClientRects()[0].left;
+				var _width= target.getClientRects()[0].width;
+				var _top = target.getClientRects()[0].top;
+				var _height = target.getClientRects()[0].height;
+				document.body.style.cursor= "nw-resize";
+				window.onmousemove = function(e){
+					/*left*/
+					var _targetWidth = Math.max(300,_width+(_left-e.clientX));
+					target.style.width = _targetWidth+"px";/*√*/
+					target.style.left = e.clientX +"px";
+					/*top*/
+					var _targetHeight = _height+(_top-e.clientY);
+					 _targetHeight = Math.max(200,  _targetHeight);
+					target.style.height = _targetHeight+"px";/*√*/
+					target.style.top = e.clientY +"px";
+					target.getClientRects()[0].left = 0;
+					
+				}
+			})
+		})
+		var bar5 = document.querySelector(".resizeBar5");
+		bar5.addEventListener("mouseenter", function(){
+			console.log(this.parentElement);
+			var target = this.parentElement;
+			this.style.cursor= "ne-resize";
+			this.addEventListener("mousedown", function(e){
+				var _left = target.getClientRects()[0].left;
+				var _width= target.getClientRects()[0].width;
+				var _top = target.getClientRects()[0].top;
+				var _height = target.getClientRects()[0].height;
+					
+				document.body.style.cursor= "ne-resize";
+				window.onmousemove = function(e){
+					// right
+					var _targetWidth = Math.max(300,e.clientX-_left);
+					target.style.width = _targetWidth+"px";/*√*/	
+
+
+					/*top*/
+					var _targetHeight = _height+(_top-e.clientY);
+					 _targetHeight = Math.max(200,  _targetHeight);
+					target.style.height = _targetHeight+"px";/*√*/
+					target.style.top = e.clientY +"px";
+					target.getClientRects()[0].left = 0;
+					
+				}
+			})
+		})
+		var bar6 = document.querySelector(".resizeBar6");
+		bar6.addEventListener("mouseenter", function(){
+			console.log(this.parentElement);
+			var target = this.parentElement;
+			this.style.cursor= "se-resize";
+			this.addEventListener("mousedown", function(e){
+				var _left = target.getClientRects()[0].left;
+				var _width= target.getClientRects()[0].width;
+				var _top = target.getClientRects()[0].top;
+				var _height = target.getClientRects()[0].height;
+					
+				document.body.style.cursor= "se-resize";
+				window.onmousemove = function(e){
+					// right
+					var _targetWidth = Math.max(300,e.clientX-_left);
+					target.style.width = _targetWidth+"px";/*√*/	
+
+
+					/*top*/
+					var _targetHeight = Math.max(0, e.clientY-_top);
+					target.style.height = (e.clientY-_top)+"px";/*√*/
+					
+				}
+			})
+		})
+		var bar7 = document.querySelector(".resizeBar7");
+		bar7.addEventListener("mouseenter", function(){
+			console.log(this.parentElement);
+			var target = this.parentElement;
+			this.style.cursor= "sw-resize";
+			this.addEventListener("mousedown", function(e){
+				var _left = target.getClientRects()[0].left;
+				var _width= target.getClientRects()[0].width;
+				var _top = target.getClientRects()[0].top;
+				var _height = target.getClientRects()[0].height;
+					
+				document.body.style.cursor= "sw-resize";
+				window.onmousemove = function(e){
+					// left
+					var _targetWidth = Math.max(300,_width+(_left-e.clientX));
+					target.style.width = _targetWidth+"px";/*√*/
+					target.style.left = e.clientX +"px";
+
+
+					/*bottom*/
+					var _targetHeight = Math.max(0, e.clientY-_top);
+					target.style.height = (e.clientY-_top)+"px";/*√*/
+					
+				}
+			})
+		})
+		window.addEventListener("mouseup", function(e){
+			window.onmousemove = "";
+			document.body.style.cursor= "default";
+		})
+	},
+	drag: function(el){
+		var drag = false;
+		this.el.querySelector(".title").addEventListener("mousedown", mousedown)
+		// document.querySelector(".title").addEventListener("mousedown", mousedown)
+		function mousedown (e) {
+			var _this = this; 
+			var _width = _this.getClientRects()[0].width;
+			var _height = _this.getClientRects()[0].height;
+			var _left = _this.getClientRects()[0].left;
+			var _top = _this.getClientRects()[0].top;
+			var _distanceX = e.clientX-_left;
+			var _distanceY = e.clientY-_top;
+			console.log(_distanceX);
+			console.log(_distanceY);
+			this.style.cursor = "default";
+			// this.parentElement.style.zIndex += 20;
+			window.onmousemove = function(e){
+				var _x = Math.max(e.clientX-_distanceX);
+				var _y = Math.max(25,e.clientY-_distanceY);
+				var _window  = _this.parentElement;
+				_window.style.top = (_y-22)+ "px";
+				_window.style.left = _x + "px";
+			}
+		}
+		this.el.querySelector(".title").addEventListener("mouseup", function(e){
+			window.onmousemove = "";
+		})
+	},
+
 }
 
 // child of Desktop
@@ -204,6 +549,7 @@ var Dock = {
 		var m = 5;
 		var h = -4;
 		var mh = -1.5;
+		/*hover icone*/
 		for (var i = 0; i < icons.length; i++) {
 			icons[i].addEventListener("mouseenter", function(e){
 				console.log(this.nextSibling);
@@ -219,7 +565,6 @@ var Dock = {
 				this.style.transition = "all 0.3s ease";
 				this.style.transform = "translate(0,"+h+"em)";
 				this.style.width = l+"rem";
-				console.log(document.querySelector(".dock"));
 				document.querySelector(".dock").style.width = dockWidth*1.2+"px";
 			})
 			icons[i].addEventListener("mouseout", function(e){
@@ -237,7 +582,32 @@ var Dock = {
 				document.querySelector(".dock").style.width = dockWidth+"px";
 
 			})
+
+			/* open safari */
 			icons[i].addEventListener('click', function(){
+				console.log("this.dataset.id", this.dataset.id);
+				var dd = this.dataset.id;
+				var url = function(){
+					switch(dd) {
+					    case "finderIcon":
+					        return null
+					        break;
+					    case "githubIcon":
+					        return "http://devgo.minmingsheng.design";
+					        break;
+					    case "LinkedIcon":
+					        return "https://space-xyz.herokuapp.com";
+					        break;
+					    case "safariIcon":
+					        return "http://minmingsheng.design/form/form.html";
+					        break;
+					    case "twitterIcon":
+					        return "http://resume.minmingsheng.design";
+					        break;
+					    default:
+					    return null
+					}
+				};
 				this.style.animation = "openApp 1.1s 4  ease";
 				if(this.nextSibling){
 					this.nextSibling.style.width = width+"px";
@@ -252,8 +622,8 @@ var Dock = {
 				this.style.transiition = "all 0.5s ease";
 				document.querySelector(".dock").style.width = dockWidth+"px";
 				animated(this, function(){
-					console.log("jaosn"); /*open safiri*/
-					Safari.addFn();
+					 /*open safiri*/
+					Safari.addFn(url());
 					Safari.close();
 					Safari.max();
 				})
@@ -265,7 +635,8 @@ var Dock = {
 var Safari = {
 	// el: document.createElement("div"),
 	className: ["window", "safari"],
-	addFn: function(a){
+	addFn: function(url){
+		/*window*/
 		var el = document.createElement("div");
 		/*style*/
 		el.style.width = window.innerWidth/2 + "px";
@@ -273,6 +644,14 @@ var Safari = {
 		// el.style.background = "red";
 		el.classList.add(this.className[0]);
 		el.classList.add(this.className[1]);
+
+		var windows = document.querySelectorAll(".window"); 
+		for (var j = 0; j < windows.length; j++) {
+			windows[j].style.zIndex = "10";
+		};
+
+		/*open on the top*/
+		el.style.zIndex = 100;
 		el.innerHTML = "";
 
 		var title = document.createElement("div");
@@ -307,12 +686,26 @@ var Safari = {
 
 		title.appendChild(leftBtns);/*<------add btn */
 
+
 		/*safariAddress*/
 		var safariAddress = document.createElement("div");
 		safariAddress.classList.add("safariAddress");
 		title.appendChild(safariAddress);
 
 		el.appendChild(title);
+
+		/*tabs*/
+		var safariTabs = document.createElement("div");
+		safariTabs.classList.add("safariTabs");
+		safariTabs.textContent = '';
+		el.appendChild(safariTabs);
+
+		var safariFrame = document.createElement("iframe");
+		safariFrame.classList.add("safariFrame");
+		safariFrame.setAttribute("src", url)
+		safariFrame.textContent = 'this safariFrame';
+		el.appendChild(safariFrame);		
+
 		Desktop.el.appendChild(el);
 		this.drag(el);
 		this.index();
@@ -413,11 +806,15 @@ var Safari = {
 
 var DockIcon = {
 	addFn: function(){
+		/*create icon*/
 		var el = document.createElement("div");
 		el.classList.add("iconContainer");
 		for (var i = 0; i < icons.length; i++) {
 			var li = document.createElement("div");
 			li.classList.add("icons");	
+			var id = icons[i].replace(".png", '');
+			id = id.replace("images/", '');
+			li.setAttribute("data-id", id);
 			var img = document.createElement('img');
 			img.setAttribute("src", icons[i]);
 			li.appendChild(img);
