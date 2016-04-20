@@ -17,6 +17,8 @@ $tabToday: #a0a1a3;
 $tabNotification: #636464;
 $mediumGray: #232323;
 $appleWhite: #f0f0f0;
+$lightGray:#656565;
+$lightWhite:#ffffff;
 
 /*font color*/
 $normalFontColor: #383838;
@@ -78,7 +80,7 @@ p{
 	width: 27em;
 	height: auto;
 	animation: apear 70ms 1 ease;
-	/*background: red;*/
+	background: $appleWhite;
 	border-radius: $regularRadius;
 	box-shadow: 1px 1px 22px rgba($dbg, 0.5);
 	.title{
@@ -446,16 +448,82 @@ body{
 .finder{
 	width: 60vw;
 	height: 75vh;
-	background: salmon;
+	/*background: salmon;*/
 	position: absolute;
 	.title{
-		height: 3rem;
+		height: 4rem;
 		border-bottom: 1px solid rgba($dbg, 0.3);
 		background-size: cover;
+		display: flex;
+		flex-wrap: wrap;
+		box-sizing: border-box;
+		>div{
+			height: 30px;
+		}
+		.folderTitle{
+			width: 66%;
+			/*background: red;*/
+			.folderTitleContainer{
+				width: 50%;
+				margin:auto;
+				/*background: blue;*/
+				display: flex;
+				margin-top: 0.4rem;
+				img{
+					height: 14px;
+					width: 17px;
+				}
+				p{
+					margin-left: 0.5rem;
+					font-size: $xFont;
+				}
+			}
+		}
+
+		.leftBtns{
+			width:26%;
+			box-sizing: border-box;
+			padding: 0.2rem;
+			/*background: green;*/
+		}
+		.layoutBtn{
+			/*background: pink;*/
+			width: 100px;
+			display: flex;
+			padding-left: 0.5rem;
+		}
 	}
-	.leftBtns{
-		width:24%;
+	.finderBody{
+		width: 100%;
+		height: 85%;
+		/*background: red;*/
+		border-bottom-left-radius: $regularRadius; 
+		border-bottom-right-radius: $regularRadius;
+		display: flex;
+		box-sizing: border-box;
+		overflow: hidden;
+		.leftPart{
+			width: 20%;	
+			background:$appleWhite;
+			border-right:0.4px solid  rgba($mediumGray, 0.2);
+		}
+		.rightPart{
+			width: 80%;
+			height: 100%;
+			background:red;
+			display: flex;
+			flex-direction: column;
+			.up{
+				background: $lightGray;
+				height: 50%;
+			}
+			.down{
+				background: $lightWhite;
+				height: 50%;
+			}
+		}
 	}
+	
 	img{
 		width: 1.5rem;
 		&:active{
@@ -562,29 +630,29 @@ $dock-width: 25rem;
 	/*background: red;*/
 }
 .resizeBar4{
-	width: 4px;
-	height: 4px;
+	width: 10px;
+	height: 10px;
 	top: 0;
 	left: 0;
 	/*background: blue;*/
 }
 .resizeBar5{
-	width: 4px;
-	height: 4px;
+	width: 10px;
+	height: 10px;
 	top: 0;
 	right: 0;
 	/*background: blue;*/
 }
 .resizeBar6{
-	width: 4px;
-	height: 4px;
+	width: 10px;
+	height: 10px;
 	bottom: 0;
 	right: 0;
 	/*background: blue;*/
 }
 .resizeBar7{
-	width: 4px;
-	height: 4px;
+	width: 10px;
+	height: 10px;
 	bottom: 0;
 	left: 0;
 	/*background: blue;*/

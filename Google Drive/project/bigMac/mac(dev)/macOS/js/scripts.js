@@ -27,6 +27,18 @@ var forderImg = {
 	folder: "images/folder-21.png",
 }
 
+var layoutBtnImg = [
+ "images/folderIcon-block.png",
+"images/folderIcon-list.png",
+"images/folderIcon-swipe.png"
+]
+
+var layoutActiveImg = [
+"images/folderIcon-block-active.png",
+ "images/folderIcon-list-active.png",
+"images/folderIcon-swipe-active.png"
+]
+
 var leftBtnsImg = [
 "images/leftBtn-close.png",
 "images/leftBtn-min.png",
@@ -307,7 +319,68 @@ var Finder = {
 
 		title.appendChild(leftBtns);
 
-/*--------------------------title--------------------------*/
+/*--------------------------Foldertitle--------------------------*/
+		var folderTitle = document.createElement("div");
+		folderTitle.classList.add("folderTitle");
+
+		var folderTitleContainer = document.createElement('div');
+		folderTitleContainer.classList.add("folderTitleContainer");
+		folderTitleContainer.innerHTML = "<img src = "+forderImg.folder+" /> <p class = 'folderTitleP'>untitled</p>"
+		folderTitle.appendChild(folderTitleContainer);		
+
+		title.appendChild(folderTitle);
+
+		// var forderImg = {
+		// 	folder: "images/folder-21.png",
+		// 	list  : "images/folderIcon-list.png",
+		// 	block  : "images/folderIcon-block.png",
+		// 	swipe  : "images/folderIcon-swipe.png",
+		// 	listActive : "images/folderIcon-list-active.png",
+		// 	blockActive : "images/folderIcon-block-active.png",
+		// 	swipeActive	: "images/folderIcon-swipe-active.png"
+		// }
+
+
+		var layoutBtn = document.createElement("div");
+
+		layoutBtn.classList.add("layoutBtn");
+
+		var block = document.createElement("div");
+		block.innerHTML = "<img src="+ layoutBtnImg[0]+" />"
+		layoutBtn.appendChild(block);
+		block.classList.add("layoutclick");
+		block.classList.add("block");
+
+		var list = document.createElement("div");
+		list.innerHTML = "<img src="+ layoutBtnImg[1]+" />"
+		layoutBtn.appendChild(list);
+		list.classList.add("layoutclick");
+		list.classList.add("list");
+
+		var swipe = document.createElement("div");
+		swipe.innerHTML = "<img src="+ layoutActiveImg[2]+" />"
+		layoutBtn.appendChild(swipe);
+		swipe.classList.add("layoutclick");
+		swipe.classList.add("swipe");
+
+		title.appendChild(layoutBtn);
+
+
+
+/*--------------------------FolderBody--------------------------*/
+		var finderBody = document.createElement("div");
+		finderBody.classList.add("finderBody");
+
+		var leftPart = document.createElement("div");
+		leftPart.classList.add("leftPart");
+
+		finderBody.appendChild(leftPart);
+		var rightPart = document.createElement("div");
+		rightPart.classList.add("rightPart");
+
+		finderBody.appendChild(rightPart);
+
+
 
 
 
@@ -320,6 +393,7 @@ var Finder = {
 		};
 
 		this.el.appendChild(title);
+		this.el.appendChild(finderBody);
 		Desktop.el.appendChild(this.el);
 
 		/*call function */
@@ -329,7 +403,7 @@ var Finder = {
 		 this.drag();
 		 this.resize();
 		 this.index();
-
+		 this.activeLayout();
 	},
 	resize: function(){
 		/*top bar*/
@@ -576,6 +650,81 @@ var Finder = {
 			})
 		};
 	},
+
+	activeLayout: function(){
+		var _this = this;
+		var btns = this.el.querySelectorAll(".layoutclick");
+		/*check the satus of layout*/
+		for (var i = 0; i < btns.length; i++) {
+			var temp = btns[i].querySelector('img').getAttribute("src");
+			console.log("temp", new RegExp("active").test(temp));
+			if(new RegExp("active").test(temp)){
+				console.log("this:", this.el);
+				this.swipeLayout(this.el)
+			}
+		}
+		/*click to active*/
+		for (var i = 0; i < btns.length; i++) {
+			btns[i].addEventListener("click", function(){
+				var target = this;
+				for (var j = 0; j < btns.length; j++) {
+					btns[j].querySelector('img').setAttribute("src", layoutBtnImg[j])
+				};
+				var src = this.querySelector("img").getAttribute("src");
+				console.log("this.getAttribute",  new RegExp("swipe").test(src));
+				var boss = target.parentElement.parentElement.parentElement;
+				if(new RegExp("block").test(src)){
+					_this.blockLayout(boss);
+				}
+				if(new RegExp("list").test(src)){
+					_this.listLayout(boss);
+				}
+				if(new RegExp("swipe").test(src)){
+					_this.swipeLayout(boss);
+				}
+				src = src.replace(".png", "-active.png")
+				this.querySelector("img").setAttribute("src", src)
+			})
+		};
+	},
+
+	blockLayout: function(boss){
+		console.log("block", boss);
+		var t = boss.querySelector(".rightPart");
+		t.innerHTML = "";
+		t.textContent = "block"
+	},
+
+	listLayout: function(boss){
+		console.log("list", boss);
+		var t = boss.querySelector(".rightPart");
+		t.innerHTML = "";
+		t.textContent = "list"
+	},
+
+	swipeLayout: function(boss){
+		console.log("swipe");
+		var t = boss.querySelector(".rightPart");
+		t.innerHTML = "";
+		// t.textContent  = "swipe"; 
+
+		var  up = document.createElement("div");
+		up.classList.add("up");
+		up.textContent = "up";
+
+		
+
+		t.appendChild(up);
+
+		var  down = document.createElement("div");
+		down.classList.add("down");
+		down.textContent = "down";
+
+		t.appendChild(down);
+
+		console.log("target,", t);
+	}
+
 
 }
 
