@@ -481,8 +481,7 @@ var Finder = {
 		 this.resize();
 		 this.index();
 		 this.activeLayout();
-		 this.swipe();
-		 this.clickDownList();
+
 	},
 	resize: function(){
 		/*top bar*/
@@ -850,6 +849,9 @@ var Finder = {
 		t.appendChild(down);
 
 		console.log("target,", t);
+
+		this.swipe();
+		this.clickDownList();
 	},
 	clickDownList: function(){
 		var _this = this;
@@ -884,11 +886,11 @@ var Finder = {
 							var offsetLeft = target.offsetLeft;
 							
 							var move = setInterval(function(){
-								target.parentElement.parentElement.scrollLeft+=2
+								target.parentElement.parentElement.scrollLeft+=1
 								if( target.parentElement.parentElement.scrollLeft == offsetLeft-300){
 									clearInterval(move)
 								}
-							}, 11)
+							}, 1)
 							console.log("ad11~~~~~~~");
 						}, 222)
 
@@ -1037,7 +1039,7 @@ var Dock = {
 					        return null
 					        break;
 					    case "githubIcon":
-					        return "http://devgo.minmingsheng.design";
+					        return "http://sheng.design/catalogue/";
 					        break;
 					    case "LinkedIcon":
 					        return "https://space-xyz.herokuapp.com";
@@ -1130,6 +1132,12 @@ var Safari = {
 
 		title.appendChild(leftBtns);/*<------add btn */
 
+		/*resize bar*/
+		for (var i = 0; i < 8; i++) {
+			var resizeBar = document.createElement("div");
+			resizeBar.classList.add("resizeBar"+ i.toString());						
+			el.appendChild(resizeBar);
+		};
 
 		/*safariAddress*/
 		var safariAddress = document.createElement("div");
@@ -1153,6 +1161,8 @@ var Safari = {
 		Desktop.el.appendChild(el);
 		this.drag(el);
 		this.index();
+		Finder.resize();
+
 	},
 	drag: function(el){
 		var drag = false;
